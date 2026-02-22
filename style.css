@@ -181,8 +181,8 @@ body {
     position: absolute;
     inset: 0;
     background: linear-gradient(135deg,
-        rgba(248, 247, 244, 0.35) 0%,
-        rgba(232, 230, 225, 0.3) 100%);
+        rgba(248, 247, 244, 0.15) 0%,
+        rgba(232, 230, 225, 0.1) 100%);
     z-index: 1;
 }
 
@@ -617,7 +617,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(248, 247, 244, 0.35);
+    background: rgba(248, 247, 244, 0.15);
     z-index: 1;
 }
 
@@ -873,7 +873,7 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(248, 247, 244, 0.35);
+    background: rgba(248, 247, 244, 0.15);
     z-index: 1;
 }
 
