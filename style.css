@@ -166,7 +166,7 @@ body {
    ============================= */
 .hero {
     min-height: 100vh;
-    background-image: url('https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-image: url('team.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -606,7 +606,7 @@ body {
 .process-section {
     padding: var(--section-padding);
     background-color: var(--color-sand);
-    background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-image: url('working.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -861,7 +861,7 @@ body {
 .cta-section {
     padding: var(--section-padding);
     background-color: var(--color-sand);
-    background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-image: url('shakehands.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
