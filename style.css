@@ -793,28 +793,16 @@ body {
     background: var(--color-white);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: var(--radius-lg);
-    padding: 6rem 2.5rem 2.5rem;
+    padding: 5rem 2.5rem 2.5rem;
     text-align: center;
     position: relative;
 }
 
-/* Linha superior discreta */
-.team-member::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background: var(--color-navy);
-    border-radius: 0 0 4px 4px;
-}
 
 /* Foto breakout */
 .photo-wrapper {
     position: absolute;
-    top: -85px;
+    top: -65px;
     left: 50%;
     transform: translateX(-50%);
     width: 170px;
