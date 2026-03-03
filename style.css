@@ -795,19 +795,41 @@ body {
     border-radius: var(--radius-lg);
     padding: 3rem 2.5rem;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .team-member:hover {
-    transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
+}
+
+/* 3D Photo Effect */
+.photo-3d-wrapper {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    position: relative;
+    border-radius: 50%;
+    transform: translateZ(60px);
+    transform-style: preserve-3d;
+}
+
+.photo-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .member-photo {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    margin: 0 auto 2rem;
+    margin: 0;
     object-fit: cover;
     background-color: var(--color-sand);
     display: block;
