@@ -56,7 +56,6 @@ function setupMobileMenu() {
         );
     });
 
-    // Close menu when clicking a link
     menu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             menu.classList.remove('open');
@@ -73,10 +72,7 @@ function setupSmoothScroll() {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         });
     });
@@ -137,64 +133,10 @@ function setupFAQ() {
 }
 
 /* =========================
-   3D PHOTO EFFECT
+   3D PHOTO EFFECT — REMOVIDO
+   Hover tratado apenas por CSS (sombra + translateY subtil)
 ========================= */
-function setup3DPhotoEffect() {
-    // Only on devices with a precise pointer (mouse), not touch
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-    document.querySelectorAll('.team-member').forEach(card => {
-        const photo = card.querySelector('.member-photo');
-        if (!photo) return;
-
-        // Wrap photo in a 3D container
-        const wrapper = document.createElement('div');
-        wrapper.className = 'photo-3d-wrapper';
-        photo.parentNode.insertBefore(wrapper, photo);
-        wrapper.appendChild(photo);
-
-        // Glare overlay
-        const glare = document.createElement('div');
-        glare.className = 'photo-glare';
-        wrapper.appendChild(glare);
-
-        let animFrame;
-
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'transform 0.1s ease, box-shadow 0.1s ease';
-        });
-
-        card.addEventListener('mousemove', (e) => {
-            cancelAnimationFrame(animFrame);
-            animFrame = requestAnimationFrame(() => {
-                const rect = card.getBoundingClientRect();
-                const nx = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-                const ny = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-
-                const rotX = -ny * 16;
-                const rotY = nx * 16;
-
-                card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
-                card.style.boxShadow = `${-nx * 28}px ${ny * 28}px 52px rgba(0,0,0,0.16), 0 8px 24px rgba(0,0,0,0.08)`;
-
-                // Glare moves with cursor
-                const gx = 50 + nx * 38;
-                const gy = 50 + ny * 38;
-                glare.style.background = `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.52) 0%, transparent 65%)`;
-                glare.style.opacity = '1';
-            });
-        });
-
-        card.addEventListener('mouseleave', () => {
-            cancelAnimationFrame(animFrame);
-            card.style.transition = 'transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.65s cubic-bezier(0.22, 1, 0.36, 1)';
-            card.style.transform = '';
-            card.style.boxShadow = '';
-            glare.style.opacity = '0';
-            setTimeout(() => { card.style.transition = ''; }, 650);
-        });
-    });
-}
+function setup3DPhotoEffect() {}
 
 /* =========================
    PARALLAX (DESKTOP ONLY)
@@ -226,19 +168,15 @@ function setupParallax() {
    INIT
 ========================= */
 document.addEventListener('DOMContentLoaded', function () {
-    // Restore saved language
     const savedLang = localStorage.getItem('lang');
     if (savedLang) {
         currentLang = savedLang;
         document.documentElement.lang = currentLang === 'pt' ? 'pt' : 'en';
     }
 
-    // Populate content from data attributes
     updateContent();
     updateLanguageButton();
     updateCopyrightYear();
-
-    // Setup interactions
     setupMobileMenu();
     setupSmoothScroll();
     setupNavScroll();
@@ -247,7 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setupParallax();
     setup3DPhotoEffect();
 
-    // Language toggle
     const langButton = document.querySelector('.lang-toggle');
     if (langButton) {
         langButton.addEventListener('click', toggleLanguage);
