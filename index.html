@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="implementiq-removebg-preview.png">
 </head>
 <body>
 
@@ -533,22 +534,34 @@
     <canvas class="pacote-canvas" id="pacoteCanvas"></canvas>
     <div class="pacote-container">
         <div class="pacote-header animate-on-scroll">
-            <div class="pacote-badge">Oferta Especial</div>
-            <h2 class="pacote-title">A sua empresa online.<br>Pronta. Profissional. Acessível.</h2>
-            <p class="pacote-subtitle">Tudo o que precisa para ter uma presença digital sólida — num único pacote, com acompanhamento dedicado.</p>
+            <div class="pacote-badge"
+                 data-pt="Oferta Especial"
+                 data-en="Special Offer">Oferta Especial</div>
+            <h2 class="pacote-title"
+                data-pt="A sua empresa online.<br>Pronta. Profissional. Acessível."
+                data-en="Your business online.<br>Ready. Professional. Affordable.">A sua empresa online.<br>Pronta. Profissional. Acessível.</h2>
+            <p class="pacote-subtitle"
+               data-pt="Tudo o que precisa para ter uma presença digital sólida — num único pacote, com acompanhamento dedicado."
+               data-en="Everything you need for a solid digital presence — in one package, with dedicated support.">Tudo o que precisa para ter uma presença digital sólida — num único pacote, com acompanhamento dedicado.</p>
         </div>
 
         <div class="pacote-card animate-on-scroll">
             <div class="pacote-price-row">
                 <div class="pacote-price-block">
-                    <p class="pacote-price-label">Investimento único</p>
+                    <p class="pacote-price-label"
+                       data-pt="Investimento único"
+                       data-en="One-time investment">Investimento único</p>
                     <div class="pacote-price"><sup>€</sup>650</div>
-                    <p class="pacote-price-note">Sem mensalidades ocultas. Tudo incluído.</p>
+                    <p class="pacote-price-note"
+                       data-pt="Sem mensalidades ocultas. Tudo incluído."
+                       data-en="No hidden fees. Everything included.">Sem mensalidades ocultas. Tudo incluído.</p>
                 </div>
                 <a href="https://wa.me/351910625090?text=Olá!%20Tenho%20interesse%20no%20Pacote%20Presença%20Digital%20por%20650€.%20Podem%20dar-me%20mais%20informações%3F"
                    class="pacote-cta-btn"
                    target="_blank"
-                   rel="noopener noreferrer">
+                   rel="noopener noreferrer"
+                   data-pt="Quero este pacote"
+                   data-en="I want this package">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                     </svg>
@@ -565,8 +578,12 @@
                         </svg>
                     </div>
                     <div class="pacote-feature-text">
-                        <div class="pacote-feature-name">Landing Page Profissional</div>
-                        <div class="pacote-feature-desc">Design moderno, responsivo e otimizado para conversão</div>
+                        <div class="pacote-feature-name"
+                             data-pt="Landing Page Profissional"
+                             data-en="Professional Landing Page">Landing Page Profissional</div>
+                        <div class="pacote-feature-desc"
+                             data-pt="Design moderno, responsivo e otimizado para conversão"
+                             data-en="Modern, responsive design optimized for conversion">Design moderno, responsivo e otimizado para conversão</div>
                     </div>
                 </div>
 
@@ -578,8 +595,12 @@
                         </svg>
                     </div>
                     <div class="pacote-feature-text">
-                        <div class="pacote-feature-name">Domínio Personalizado</div>
-                        <div class="pacote-feature-desc">Registo e configuração do seu domínio .pt ou .com</div>
+                        <div class="pacote-feature-name"
+                             data-pt="Domínio Personalizado"
+                             data-en="Custom Domain">Domínio Personalizado</div>
+                        <div class="pacote-feature-desc"
+                             data-pt="Registo e configuração do seu domínio .pt ou .com"
+                             data-en="Registration and setup of your .pt or .com domain">Registo e configuração do seu domínio .pt ou .com</div>
                     </div>
                 </div>
 
@@ -591,8 +612,12 @@
                         </svg>
                     </div>
                     <div class="pacote-feature-text">
-                        <div class="pacote-feature-name">Hospedagem (1 ano)</div>
-                        <div class="pacote-feature-desc">Servidor rápido, seguro e com certificado SSL incluído</div>
+                        <div class="pacote-feature-name"
+                             data-pt="Hospedagem (1 ano)"
+                             data-en="Hosting (1 year)">Hospedagem (1 ano)</div>
+                        <div class="pacote-feature-desc"
+                             data-pt="Servidor rápido, seguro e com certificado SSL incluído"
+                             data-en="Fast, secure server with SSL certificate included">Servidor rápido, seguro e com certificado SSL incluído</div>
                     </div>
                 </div>
 
@@ -605,13 +630,19 @@
                         </svg>
                     </div>
                     <div class="pacote-feature-text">
-                        <div class="pacote-feature-name">Google Analytics</div>
-                        <div class="pacote-feature-desc">Configuração completa para acompanhar visitas e conversões</div>
+                        <div class="pacote-feature-name"
+                             data-pt="Google Analytics"
+                             data-en="Google Analytics">Google Analytics</div>
+                        <div class="pacote-feature-desc"
+                             data-pt="Configuração completa para acompanhar visitas e conversões"
+                             data-en="Full setup to track visits and conversions">Configuração completa para acompanhar visitas e conversões</div>
                     </div>
                 </div>
             </div>
 
-            <div class="pacote-guarantee">
+            <div class="pacote-guarantee"
+                 data-pt="Entrega em 7 a 10 dias úteis · Suporte pós-entrega incluído · Sem custos adicionais surpresa"
+                 data-en="Delivery in 7 to 10 business days · Post-delivery support included · No surprise extra costs">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
