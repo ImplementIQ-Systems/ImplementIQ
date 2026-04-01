@@ -163,6 +163,31 @@ function setupParallax() {
 }
 
 /* =========================
+   COOKIE CONSENT (RGPD)
+========================= */
+function setupCookieBanner() {
+    const banner = document.getElementById('cookieBanner');
+    const acceptBtn = document.getElementById('cookieAccept');
+    const rejectBtn = document.getElementById('cookieReject');
+    if (!banner) return;
+
+    const consent = localStorage.getItem('cookie_consent');
+    if (!consent) {
+        setTimeout(() => { banner.style.display = 'block'; }, 800);
+    }
+
+    acceptBtn.addEventListener('click', () => {
+        localStorage.setItem('cookie_consent', 'all');
+        banner.style.display = 'none';
+    });
+
+    rejectBtn.addEventListener('click', () => {
+        localStorage.setItem('cookie_consent', 'essential');
+        banner.style.display = 'none';
+    });
+}
+
+/* =========================
    INIT
 ========================= */
 document.addEventListener('DOMContentLoaded', function () {
@@ -185,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupScrollAnimations();
     setupFAQ();
     setupParallax();
+    setupCookieBanner();
 
     // Language toggle
     const langButton = document.querySelector('.lang-toggle');
