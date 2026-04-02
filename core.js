@@ -166,7 +166,7 @@ function setupParallax() {
    PACOTE CANVAS (TECH GRID)
 ========================= */
 function setupPacoteCanvas() {
-    const canvas = document.getElementById('pacoteCanvas');
+    const canvas = document.getElementById('packCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
@@ -236,7 +236,7 @@ function setupPacoteCanvas() {
     draw();
 
     // Stagger feature cards on scroll
-    const features = document.querySelector('.pacote-features');
+    const features = document.querySelector('.pack-includes');
     if (features) {
         const obs = new IntersectionObserver(([entry]) => {
             if (entry.isIntersecting) {
