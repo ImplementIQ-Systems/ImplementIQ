@@ -1085,8 +1085,40 @@ body {
     }
 
     .hero {
-        padding: 7rem 1.25rem 4rem;
-        min-height: auto;
+        padding: 0;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .hero-container {
+        padding: 6rem 1.5rem 3rem;
+    }
+
+    .hero-content {
+        background: rgba(255, 255, 255, 0.82);
+        padding: 2rem 1.75rem;
+        text-align: left;
+    }
+
+    .hero-title {
+        font-size: clamp(2rem, 8vw, 2.75rem);
+    }
+
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+        padding: 1.1rem 2rem;
+        font-size: 1.05rem;
+    }
+
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
     }
 
     .hero-actions {
