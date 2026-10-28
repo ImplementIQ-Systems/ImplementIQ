@@ -148,7 +148,7 @@
        e o CSS faz a transição. O observador deixa de o vigiar logo a seguir,
        por isso a animação acontece uma só vez. */
     function setupReveal() {
-        var items = document.querySelectorAll('.reveal');
+        var items = document.querySelectorAll('.reveal, .reveal-group');
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         /* Sem suporte ou com movimento reduzido: mostrar tudo de imediato */

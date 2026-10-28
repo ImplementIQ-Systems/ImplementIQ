@@ -40,3 +40,16 @@ O email que receber as mensagens é o configurado no Formspree. Quando existir o
 - A fonte (Schibsted Grotesk) está em `fonts/`, sem pedidos ao Google (RGPD).
 - Com "reduzir movimento" ativo no sistema, as animações são desligadas.
 - Os ficheiros `working.png`, `team.png`, `shakehands.png`, `Everson.png` e `Pedro.png` já não são usados e podem ser apagados.
+
+
+## Identidade visual (System Flow)
+
+- `style.css` começa pelos tokens (`--color-*`, `--space-*`, `--radius-*`, `--shadow-*`, `--transition-*`). Alterar cores ou espaços é mudar aí.
+- O hero é um SVG animado só com CSS e SMIL (sem bibliotecas): Fragmentação, Conexão, Automação, Visibilidade. Com `prefers-reduced-motion` aparece a composição final, parada. Em telemóvel usa uma versão com menos sistemas.
+- Se num telemóvel nada se mexe, verificar a definição de acessibilidade "Reduzir movimento" (iOS: Definições > Acessibilidade > Movimento).
+- Fontes locais: Schibsted Grotesk (texto) e Geist Mono (etiquetas). Licenças em `fonts/`.
+- O logótipo (`img/logo-mark.png`) não foi alterado.
+
+## Adicionar um projeto à secção "Projetos"
+
+Na `index.html`, secção `#projetos`, existe um modelo comentado de `<article class="project">`. Copiar, preencher só com informação verificável (problema, solução, o que foi construído, tecnologias, resultado observado) e remover o bloco `.projects-empty`. Não inventar números nem clientes.
