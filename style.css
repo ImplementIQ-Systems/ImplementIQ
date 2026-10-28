@@ -242,16 +242,16 @@ a { color: inherit; }
     color: var(--color-accent);
 }
 
-/* Motivo ImplementIQ: uma linha que termina num nó de ligação.
-   Aparece no eyebrow, no CTA final e nos nós do System Flow. */
+/* Motivo ImplementIQ: um nó de ligação com um halo suave.
+   Aparece no eyebrow, nos nós do System Flow e no CTA final. */
 .eyebrow::before {
     content: "";
     flex: none;
-    width: 24px;
+    width: 8px;
     height: 8px;
-    background:
-        radial-gradient(circle at 19px 50%, currentColor 0 3.5px, transparent 4px),
-        linear-gradient(currentColor, currentColor) 0 50% / 12px 2px no-repeat;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 0 4px rgba(155, 148, 255, 0.2);
 }
 
 .hero .eyebrow { color: var(--color-accent-soft); }
@@ -488,6 +488,7 @@ a { color: inherit; }
    a animação parte de uma posição desordenada (--dx, --dy, --r). */
 .sf-chip { transform-box: fill-box; transform-origin: center; animation: sf-settle 1.5s var(--ease) calc(0.5s + var(--i) * 0.09s) both; }
 .sf-chip rect { fill: var(--color-night-2); stroke: #3a4580; stroke-width: 1.2; animation: sf-solid 0.7s ease calc(1.5s + var(--i) * 0.09s) both; }
+.sf-chip-dot { fill: var(--color-accent-soft); }
 .sf-chip text { fill: #e6e9f7; font-size: 13px; font-weight: 500; }
 
 .sf-wire { fill: none; stroke: var(--color-accent-soft); stroke-opacity: 0.5; stroke-width: 1.4; }
@@ -496,10 +497,10 @@ a { color: inherit; }
 .sf-trunk { animation-delay: 3.5s; animation-duration: 0.7s; }
 .sf-dot { fill: var(--color-accent-soft); animation: sf-appear 0.5s ease 2.9s both; }
 
-.sf-rule rect.sf-rule-box { fill: var(--color-night-2); stroke: var(--color-accent-soft); stroke-width: 1.5; animation: sf-appear 0.7s ease 3.2s both; }
+.sf-rule .sf-rule-box { fill: var(--color-night-2); stroke: var(--color-accent-soft); stroke-width: 1.5; animation: sf-appear 0.7s ease 3.2s both; }
 .sf-rule text { fill: #fff; font-size: 12px; font-weight: 600; animation: sf-appear 0.7s ease 3.4s both; }
 .sf-rule .sf-rule-sub { fill: var(--color-accent-soft); font-size: 10px; font-weight: 500; }
-.sf-ring { fill: none; stroke: var(--color-accent-soft); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; opacity: 0; animation: sf-ring 2.4s ease-out 3.4s 2; }
+.sf-rule .sf-ring { fill: none; stroke: var(--color-accent-soft); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; opacity: 0; animation: sf-ring 2.4s ease-out 3.4s 2; }
 
 .sf-panel { fill: var(--color-night-2); stroke: #4a548f; stroke-width: 1.3; animation: sf-appear 0.8s ease 4s both; }
 .sf-panel-title { fill: var(--color-night-text); font-size: 10px; animation: sf-appear 0.8s ease 4.2s both; }
@@ -525,7 +526,7 @@ a { color: inherit; }
 
 .sf-stage {
     position: relative;
-    padding-top: var(--space-3);
+    padding-top: var(--space-5);
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     font-weight: 500;
@@ -539,23 +540,13 @@ a { color: inherit; }
     content: "";
     position: absolute;
     left: 0;
-    right: 0;
-    top: 0;
-    height: 2px;
+    top: 2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
     background: var(--color-accent-soft);
-    transform-origin: left;
-    animation: sf-fill 0.9s var(--ease) var(--t) both;
-}
-
-.sf-stage::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 2px;
-    background: var(--color-night-border);
-    z-index: -1;
+    box-shadow: 0 0 0 4px rgba(155, 148, 255, 0.2);
+    animation: sf-appear 0.7s ease var(--t) both;
 }
 
 .sf-stage b { display: block; margin-bottom: 2px; color: var(--color-accent-soft); font-weight: 600; }
@@ -825,7 +816,7 @@ a { color: inherit; }
 .stack { display: grid; gap: 0; margin-top: 0; border-top: 1px solid var(--color-text); }
 .pillar-list { margin: var(--space-4) 0 0; padding: 0; list-style: none; }
 .pillar-list li { position: relative; padding: 4px 0 4px 20px; color: var(--color-muted); }
-.pillar-list li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: 8px; height: 2px; background: var(--color-accent); }
+.pillar-list li::before { content: ""; position: absolute; left: 2px; top: 0.82em; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
 .price-note { margin-top: var(--space-4); font-weight: 650; color: var(--color-text); }
 
 /* Método (página própria): linha vertical a ligar os passos */
@@ -1256,7 +1247,7 @@ a { color: inherit; }
     html { scroll-behavior: auto; }
 
     .hero .enter,
-    .sf-chip, .sf-chip rect, .sf-draw, .sf-dot, .sf-rule rect.sf-rule-box, .sf-rule text, .sf-ring,
+    .sf-chip, .sf-chip rect, .sf-draw, .sf-dot, .sf-rule .sf-rule-box, .sf-rule text, .sf-ring,
     .sf-panel, .sf-panel-title, .sf-kpi, .sf-base, .sf-bar, .sf-trend,
     .sf-stage, .sf-stage::before { animation: none; }
 
