@@ -212,8 +212,6 @@ a { color: inherit; }
 .cta .btn-ghost:hover { background: #fff; border-color: #fff; color: var(--color-night); }
 
 /* Seta do botão principal: desloca-se 3 px no hover (só em dispositivos com rato) */
-.btn .arr { transition: transform var(--transition-fast); }
-@media (hover: hover) { .btn:hover .arr { transform: translateX(3px); } }
 
 .link {
     font-weight: 600;
