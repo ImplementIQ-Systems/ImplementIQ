@@ -11,7 +11,7 @@ Site estático (HTML, CSS e JavaScript simples), pensado para o GitHub Pages. Se
 | `metodo.html` | Os 4 passos e os prazos habituais |
 | `sobre.html` | Equipa e onde trabalhamos |
 | `contacto.html` | Formulário, contacto direto e perguntas frequentes |
-| `pack.html` | Pack landing page (650€) |
+| `pack.html` | Pack landing page (850€) |
 | `privacidade.html` | Política de Privacidade |
 
 `style.css` é partilhado por todas. `core.js` (idioma PT/EN, menu, entrada ao deslizar), `net.js` (rede animada do hero) e `form.js` (formulário) são carregados onde fazem falta.
