@@ -192,7 +192,7 @@
 
 /* ── PARTICLE NETWORK (page-hero .iq-net) ──────────────────────────────── */
 (function () {
-    var N = 40, MAX_DIST = 128;
+    var N = 48, MAX_DIST = 150;
 
     function initCanvas(c) {
         var ctx = c.getContext('2d');
@@ -207,7 +207,7 @@
             pts = [];
             for (var i = 0; i < N; i++) {
                 pts.push({
-                    x: Math.random() * c.width,
+                    x: c.width * (0.4 + Math.random() * 0.6), /* só no lado direito, onde não há texto */
                     y: Math.random() * c.height,
                     vx: (Math.random() - 0.5) * 0.26,
                     vy: (Math.random() - 0.5) * 0.26
@@ -220,19 +220,19 @@
             for (var i = 0; i < N; i++) {
                 var p = pts[i];
                 p.x += p.vx; p.y += p.vy;
-                if (p.x < 0 || p.x > c.width)  p.vx *= -1;
+                if (p.x < c.width * 0.38 || p.x > c.width)  p.vx *= -1;
                 if (p.y < 0 || p.y > c.height) p.vy *= -1;
                 for (var j = i + 1; j < N; j++) {
                     var q = pts[j], dx = p.x - q.x, dy = p.y - q.y;
                     var d = Math.sqrt(dx * dx + dy * dy);
                     if (d < MAX_DIST) {
-                        ctx.strokeStyle = 'rgba(155,148,255,' + ((1 - d / MAX_DIST) * 0.38) + ')';
-                        ctx.lineWidth = 0.6;
+                        ctx.strokeStyle = 'rgba(155,148,255,' + ((1 - d / MAX_DIST) * 0.85) + ')';
+                        ctx.lineWidth = 1;
                         ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
                     }
                 }
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1.3, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(155,148,255,0.48)'; ctx.fill();
+                ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(185,180,255,0.95)'; ctx.fill();
             }
             requestAnimationFrame(draw);
         }
