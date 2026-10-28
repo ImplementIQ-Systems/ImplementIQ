@@ -1380,23 +1380,23 @@ a { color: inherit; }
     height: 100%;
     pointer-events: none;
     /* desvanece no fim do hero e atrás da coluna de texto */
-    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 58%, transparent 92%), linear-gradient(90deg, rgba(0, 0, 0, 0.4), #000 42%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 58%, transparent 92%), linear-gradient(90deg, rgba(0, 0, 0, 0.06) 28%, #000 50%);
     -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 58%, transparent 92%), linear-gradient(90deg, rgba(0, 0, 0, 0.4), #000 42%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 58%, transparent 92%), linear-gradient(90deg, rgba(0, 0, 0, 0.06) 28%, #000 50%);
     mask-composite: intersect;
 }
 
 .infra path, .infra circle { fill: none; stroke: none; }
-.infra path { stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.infra path { stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .infra-far { filter: blur(0.5px); }
-.infra-far path { stroke: rgba(255, 255, 255, 0.085); }
-.infra-near path { stroke: rgba(255, 255, 255, 0.14); }
-.infra-near path.acc { stroke: rgba(155, 148, 255, 0.34); }
-.infra-nodes circle { fill: rgba(255, 255, 255, 0.16); }
-.infra-nodes circle.a { fill: rgba(155, 148, 255, 0.4); }
-.infra-nodes circle.ring { fill: none; stroke: rgba(255, 255, 255, 0.12); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.infra-far path { stroke: rgba(255, 255, 255, 0.16); }
+.infra-near path { stroke: rgba(255, 255, 255, 0.26); }
+.infra-near path.acc { stroke: rgba(155, 148, 255, 0.55); }
+.infra-nodes circle { fill: rgba(255, 255, 255, 0.3); }
+.infra-nodes circle.a { fill: rgba(155, 148, 255, 0.65); }
+.infra-nodes circle.ring { fill: none; stroke: rgba(255, 255, 255, 0.22); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .infra-nodes circle.end { fill: var(--color-accent-soft); fill-opacity: 0.25; }
-.infra-nodes path.cross { stroke: rgba(255, 255, 255, 0.14); }
+.infra-nodes path.cross { stroke: rgba(255, 255, 255, 0.26); }
 .infra-pulse circle { fill: var(--color-accent-soft); }
 .infra-pulse .halo { fill-opacity: 0.22; }
 
