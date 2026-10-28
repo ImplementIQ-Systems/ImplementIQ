@@ -7,7 +7,7 @@
     <title data-pt="ImplementIQ Systems | Automação, BI e integração de sistemas para PMEs" data-en="ImplementIQ Systems | Automation, BI and systems integration for SMEs">ImplementIQ Systems | Automação, BI e integração de sistemas para PMEs</title>
 
     <meta name="description" content="Automação de processos, Business Intelligence e integração de dados para PMEs em Portugal. Implementamos, formamos a equipa e acompanhamos depois da entrega." data-pt="Automação de processos, Business Intelligence e integração de dados para PMEs em Portugal. Implementamos, formamos a equipa e acompanhamos depois da entrega." data-en="Process automation, Business Intelligence and data integration for SMEs in Portugal. We implement, train your team and support you after delivery.">
-    <meta name="theme-color" content="#0f1530">
+    <meta name="theme-color" content="#0a0f24">
 
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="ImplementIQ Systems">
@@ -17,6 +17,7 @@
 
     <script>document.documentElement.classList.add("js");</script>
     <link rel="preload" href="fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/geist-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
@@ -52,125 +53,126 @@
 <main id="conteudo">
 <!-- Hero -->
 <section class="hero" id="topo">
-    <canvas class="net" aria-hidden="true"></canvas>
     <div class="hero-glow" aria-hidden="true"></div>
-    <div class="wrap">
-        <h1 class="enter"
-            data-pt="Ligamos os seus sistemas.<br><span class=&quot;soft&quot;>Acabamos com o trabalho manual repetido.</span>"
-            data-en="We connect your systems.<br><span class=&quot;soft&quot;>We end repetitive manual work.</span>">Ligamos os seus sistemas.<br><span class="soft">Acabamos com o trabalho manual repetido.</span></h1>
+    <div class="wrap hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow enter" data-pt="Automação · Dados · Sistemas para operações B2B" data-en="Automation · Data · Systems for B2B operations">Automação · Dados · Sistemas para operações B2B</p>
+            <h1 class="enter" style="--d:0.08s"
+                data-pt="Ligamos os seus sistemas.<br><span class=&quot;soft&quot;>Acabamos com o trabalho manual repetido.</span>"
+                data-en="We connect your systems.<br><span class=&quot;soft&quot;>We end repetitive manual work.</span>">Ligamos os seus sistemas.<br><span class="soft">Acabamos com o trabalho manual repetido.</span></h1>
 
-        <div class="hero-side enter" style="--d:0.12s">
-            <p data-pt="Automação, Business Intelligence e integração de dados para PMEs em Portugal. Implementamos o que a empresa já decidiu mudar e acompanhamos depois da entrega."
+            <p class="hero-lead enter" style="--d:0.16s"
+               data-pt="Automação, Business Intelligence e integração de dados para PMEs em Portugal. Implementamos o que a empresa já decidiu mudar e acompanhamos depois da entrega."
                data-en="Automation, Business Intelligence and data integration for SMEs in Portugal. We implement what your company has already decided to change, and we stay with you after delivery.">Automação, Business Intelligence e integração de dados para PMEs em Portugal. Implementamos o que a empresa já decidiu mudar e acompanhamos depois da entrega.</p>
 
-            <div class="hero-actions">
-                <a href="contacto.html#formulario" class="btn btn-primary" data-pt="Marcar conversa inicial" data-en="Book an initial call">Marcar conversa inicial</a>
+            <div class="hero-actions enter" style="--d:0.24s">
+                <a href="contacto.html#formulario" class="btn btn-primary"><span data-pt="Marcar conversa inicial" data-en="Book an initial call">Marcar conversa inicial</span><span class="arr" aria-hidden="true">→</span></a>
                 <a href="metodo.html" class="btn btn-ghost" data-pt="Ver como trabalhamos" data-en="See how we work">Ver como trabalhamos</a>
             </div>
         </div>
 
-        <figure class="hero-figure enter" style="--d:0.24s">
-            <div class="console">
-                <div class="console-bar">
-                    <span class="dot" aria-hidden="true"></span>
-                    <span data-pt="Exemplo ilustrativo" data-en="Illustration">Exemplo ilustrativo</span>
-                </div>
-
-                <!-- Diagrama para ecrãs largos -->
-                <svg class="diagram diagram-d" viewBox="0 0 1120 340" role="img" aria-labelledby="diagD">
-                    <title id="diagD" data-pt="Cinco ferramentas separadas (Excel, faturação, stock, CRM e email) ligadas a um único painel"
-                           data-en="Five separate tools (Excel, invoicing, stock, CRM and email) connected to a single dashboard">Cinco ferramentas separadas (Excel, faturação, stock, CRM e email) ligadas a um único painel</title>
-
-                    <!-- Linhas a tracejado: as ferramentas hoje, sem ligação -->
-                    <path id="pd1" class="wire" d="M190 40 C 400 40, 420 170, 620 170"/>
-                    <path id="pd2" class="wire" d="M190 105 C 400 105, 420 170, 620 170"/>
-                    <path id="pd3" class="wire" d="M190 170 L620 170"/>
-                    <path id="pd4" class="wire" d="M190 235 C 400 235, 420 170, 620 170"/>
-                    <path id="pd5" class="wire" d="M190 300 C 400 300, 420 170, 620 170"/>
-                    <path id="pdt" class="wire" d="M620 170 L820 170"/>
-
-                    <!-- Linhas a cheio: a ligação a desenhar-se -->
-                    <path class="flow f1" pathLength="1" d="M190 40 C 400 40, 420 170, 620 170"/>
-                    <path class="flow f2" pathLength="1" d="M190 105 C 400 105, 420 170, 620 170"/>
-                    <path class="flow f3" pathLength="1" d="M190 170 L620 170"/>
-                    <path class="flow f4" pathLength="1" d="M190 235 C 400 235, 420 170, 620 170"/>
-                    <path class="flow f5" pathLength="1" d="M190 300 C 400 300, 420 170, 620 170"/>
-                    <path class="flow trunk" pathLength="1" d="M620 170 L820 170"/>
-                    <circle class="pulse" cx="620" cy="170" r="7"/>
-                    <circle class="hub" cx="620" cy="170" r="7"/>
-
-                    <!-- Dados a circular: cada ponto percorre uma ligação, de forma repetida -->
-                    <circle class="packet" r="4.5" opacity="0"><animateMotion dur="3s" begin="2.8s" repeatCount="indefinite"><mpath href="#pd1"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="2.8s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="4.5" opacity="0"><animateMotion dur="3s" begin="3.4s" repeatCount="indefinite"><mpath href="#pd2"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="3.4s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="4.5" opacity="0"><animateMotion dur="3s" begin="4s" repeatCount="indefinite"><mpath href="#pd3"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="4s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="4.5" opacity="0"><animateMotion dur="3s" begin="4.6s" repeatCount="indefinite"><mpath href="#pd4"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="4.6s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="4.5" opacity="0"><animateMotion dur="3s" begin="5.2s" repeatCount="indefinite"><mpath href="#pd5"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="5.2s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="4.5" opacity="0"><animateMotion dur="1.5s" begin="3s" repeatCount="indefinite"><mpath href="#pdt"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="1.5s" begin="3s" repeatCount="indefinite"/></circle>
-
-                    <g class="node"><rect x="0.75" y="18" width="189" height="44" rx="8"/><text x="18" y="45.5" data-pt="Folhas Excel" data-en="Excel sheets">Folhas Excel</text></g>
-                    <g class="node"><rect x="0.75" y="83" width="189" height="44" rx="8"/><text x="18" y="110.5" data-pt="Faturação" data-en="Invoicing">Faturação</text></g>
-                    <g class="node"><rect x="0.75" y="148" width="189" height="44" rx="8"/><text x="18" y="175.5">Stock</text></g>
-                    <g class="node"><rect x="0.75" y="213" width="189" height="44" rx="8"/><text x="18" y="240.5">CRM</text></g>
-                    <g class="node"><rect x="0.75" y="278" width="189" height="44" rx="8"/><text x="18" y="305.5">Email</text></g>
-
-                    <rect class="panel" x="820" y="10" width="300" height="320" rx="12"/>
-                    <text class="panel-title" x="848" y="50" data-pt="Painel único" data-en="Single dashboard">Painel único</text>
-                    <rect class="kpi" x="848" y="76" width="76" height="44" rx="6"/>
-                    <rect class="kpi" x="934" y="76" width="76" height="44" rx="6"/>
-                    <rect class="kpi" x="1020" y="76" width="76" height="44" rx="6"/>
-                    <line class="baseline" x1="848" y1="310" x2="1096" y2="310"/>
-                    <rect class="bar" style="--i:0" x="848" y="240" width="32" height="70" rx="3"/>
-                    <rect class="bar" style="--i:1" x="900" y="195" width="32" height="115" rx="3"/>
-                    <rect class="bar" style="--i:2" x="952" y="215" width="32" height="95" rx="3"/>
-                    <rect class="bar" style="--i:3" x="1004" y="160" width="32" height="150" rx="3"/>
-                    <rect class="bar hot" style="--i:4" x="1056" y="185" width="32" height="125" rx="3"/>
-                </svg>
-
-                <!-- Diagrama para telemóvel -->
-                <svg class="diagram diagram-m" viewBox="0 0 340 250" role="img" aria-labelledby="diagM">
-                    <title id="diagM" data-pt="Cinco ferramentas separadas (Excel, faturação, stock, CRM e email) ligadas a um único painel"
-                           data-en="Five separate tools (Excel, invoicing, stock, CRM and email) connected to a single dashboard">Cinco ferramentas separadas (Excel, faturação, stock, CRM e email) ligadas a um único painel</title>
-
-                    <path id="pm1" class="wire" d="M118 25 C 150 25, 160 125, 185 125"/>
-                    <path id="pm2" class="wire" d="M118 75 C 150 75, 160 125, 185 125"/>
-                    <path id="pm3" class="wire" d="M118 125 L185 125"/>
-                    <path id="pm4" class="wire" d="M118 175 C 150 175, 160 125, 185 125"/>
-                    <path id="pm5" class="wire" d="M118 225 C 150 225, 160 125, 185 125"/>
-                    <path id="pmt" class="wire" d="M185 125 L225 125"/>
-
-                    <path class="flow f1" pathLength="1" d="M118 25 C 150 25, 160 125, 185 125"/>
-                    <path class="flow f2" pathLength="1" d="M118 75 C 150 75, 160 125, 185 125"/>
-                    <path class="flow f3" pathLength="1" d="M118 125 L185 125"/>
-                    <path class="flow f4" pathLength="1" d="M118 175 C 150 175, 160 125, 185 125"/>
-                    <path class="flow f5" pathLength="1" d="M118 225 C 150 225, 160 125, 185 125"/>
-                    <path class="flow trunk" pathLength="1" d="M185 125 L225 125"/>
-                    <circle class="pulse" cx="185" cy="125" r="6"/>
-                    <circle class="hub" cx="185" cy="125" r="6"/>
-
-                    <circle class="packet" r="3.5" opacity="0"><animateMotion dur="3s" begin="2.8s" repeatCount="indefinite"><mpath href="#pm1"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="2.8s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="3.5" opacity="0"><animateMotion dur="3s" begin="3.4s" repeatCount="indefinite"><mpath href="#pm2"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="3.4s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="3.5" opacity="0"><animateMotion dur="3s" begin="4s" repeatCount="indefinite"><mpath href="#pm3"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="4s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="3.5" opacity="0"><animateMotion dur="3s" begin="4.6s" repeatCount="indefinite"><mpath href="#pm4"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="4.6s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="3.5" opacity="0"><animateMotion dur="3s" begin="5.2s" repeatCount="indefinite"><mpath href="#pm5"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="5.2s" repeatCount="indefinite"/></circle>
-                    <circle class="packet" r="3.5" opacity="0"><animateMotion dur="1.2s" begin="3s" repeatCount="indefinite"><mpath href="#pmt"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="1.2s" begin="3s" repeatCount="indefinite"/></circle>
-
-                    <g class="node"><rect x="0.75" y="7" width="117" height="36" rx="8"/><text x="12" y="29.5" data-pt="Folhas Excel" data-en="Excel sheets">Folhas Excel</text></g>
-                    <g class="node"><rect x="0.75" y="57" width="117" height="36" rx="8"/><text x="12" y="79.5" data-pt="Faturação" data-en="Invoicing">Faturação</text></g>
-                    <g class="node"><rect x="0.75" y="107" width="117" height="36" rx="8"/><text x="12" y="129.5">Stock</text></g>
-                    <g class="node"><rect x="0.75" y="157" width="117" height="36" rx="8"/><text x="12" y="179.5">CRM</text></g>
-                    <g class="node"><rect x="0.75" y="207" width="117" height="36" rx="8"/><text x="12" y="229.5">Email</text></g>
-
-                    <rect class="panel" x="225" y="5" width="114" height="240" rx="10"/>
-                    <text class="panel-title" x="239" y="33" data-pt="Painel" data-en="Dashboard">Painel</text>
-                    <line class="baseline" x1="239" y1="225" x2="325" y2="225"/>
-                    <rect class="bar" style="--i:0" x="239" y="165" width="22" height="60" rx="3"/>
-                    <rect class="bar" style="--i:1" x="274" y="120" width="22" height="105" rx="3"/>
-                    <rect class="bar hot" style="--i:2" x="309" y="85" width="22" height="140" rx="3"/>
-                </svg>
+        <figure class="hero-visual enter" style="--d:0.2s">
+            <div class="sf">
+<svg class="sf-svg sf-svg-d" viewBox="0 0 680 440" role="img" aria-labelledby="sfD">
+<title id="sfD" data-pt="Sete sistemas separados (Excel, CRM, email, stock, ERP, faturação e dados) que se alinham, ligam, automatizam e acabam num único painel" data-en="Seven separate systems (Excel, CRM, email, stock, ERP, invoicing and data) that line up, connect, automate and end in a single dashboard">Sete sistemas separados (Excel, CRM, email, stock, ERP, faturação e dados) que se alinham, ligam, automatizam e acabam num único painel</title>
+<path class="sf-wire sf-draw" style="--i:0" pathLength="1" d="M150 40 H232"/>
+<path class="sf-wire sf-draw" style="--i:1" pathLength="1" d="M150 98 H232"/>
+<path class="sf-wire sf-draw" style="--i:2" pathLength="1" d="M150 156 H232"/>
+<path class="sf-wire sf-draw" style="--i:3" pathLength="1" d="M150 214 H232"/>
+<path class="sf-wire sf-draw" style="--i:4" pathLength="1" d="M150 272 H232"/>
+<path class="sf-wire sf-draw" style="--i:5" pathLength="1" d="M150 330 H232"/>
+<path class="sf-wire sf-draw" style="--i:6" pathLength="1" d="M150 388 H232"/>
+<path class="sf-wire sf-draw sf-rail" pathLength="1" d="M232 40 V388"/>
+<path class="sf-wire sf-draw sf-trunk" style="animation-delay:2.9s" pathLength="1" d="M232 214 H300"/>
+<path class="sf-wire sf-draw sf-trunk" pathLength="1" d="M420 214 H520"/>
+<circle class="sf-dot" cx="232" cy="40" r="3.2"/>
+<circle class="sf-dot" cx="232" cy="98" r="3.2"/>
+<circle class="sf-dot" cx="232" cy="156" r="3.2"/>
+<circle class="sf-dot" cx="232" cy="214" r="3.2"/>
+<circle class="sf-dot" cx="232" cy="272" r="3.2"/>
+<circle class="sf-dot" cx="232" cy="330" r="3.2"/>
+<circle class="sf-dot" cx="232" cy="388" r="3.2"/>
+<path id="sfp0" d="M150 40 H232 V214 H300" fill="none"/>
+<path id="sfp1" d="M150 98 H232 V214 H300" fill="none"/>
+<path id="sfp2" d="M150 156 H232 V214 H300" fill="none"/>
+<path id="sfp3" d="M150 214 H232 V214 H300" fill="none"/>
+<path id="sfp4" d="M150 272 H232 V214 H300" fill="none"/>
+<path id="sfp5" d="M150 330 H232 V214 H300" fill="none"/>
+<path id="sfp6" d="M150 388 H232 V214 H300" fill="none"/>
+<path id="sfpt" d="M420 214 H520" fill="none"/>
+<g class="sf-chip" style="--i:0;--dx:-30px;--dy:-10px;--r:-4deg"><rect x="0.6" y="20" width="149" height="40" rx="9"/><text x="16" y="45">Excel</text></g>
+<g class="sf-chip" style="--i:1;--dx:26px;--dy:8px;--r:3deg"><rect x="0.6" y="78" width="149" height="40" rx="9"/><text x="16" y="103">CRM</text></g>
+<g class="sf-chip" style="--i:2;--dx:-18px;--dy:-9px;--r:-3deg"><rect x="0.6" y="136" width="149" height="40" rx="9"/><text x="16" y="161">Email</text></g>
+<g class="sf-chip" style="--i:3;--dx:34px;--dy:9px;--r:4deg"><rect x="0.6" y="194" width="149" height="40" rx="9"/><text x="16" y="219">Stock</text></g>
+<g class="sf-chip" style="--i:4;--dx:-28px;--dy:-8px;--r:3deg"><rect x="0.6" y="252" width="149" height="40" rx="9"/><text x="16" y="277">ERP</text></g>
+<g class="sf-chip" style="--i:5;--dx:22px;--dy:10px;--r:-4deg"><rect x="0.6" y="310" width="149" height="40" rx="9"/><text x="16" y="335" data-pt="Faturação" data-en="Invoicing">Faturação</text></g>
+<g class="sf-chip" style="--i:6;--dx:-34px;--dy:6px;--r:3deg"><rect x="0.6" y="368" width="149" height="40" rx="9"/><text x="16" y="393" data-pt="Dados" data-en="Data">Dados</text></g>
+<g class="sf-rule"><rect class="sf-ring" x="300" y="182" width="120" height="64" rx="12"/><rect class="sf-rule-box" x="300" y="182" width="120" height="64" rx="12"/><text x="360" y="211" text-anchor="middle" data-pt="REGRA" data-en="RULE">REGRA</text><text class="sf-rule-sub" x="360" y="229" text-anchor="middle" data-pt="se → então" data-en="if → then">se → então</text></g>
+<rect class="sf-panel" x="520" y="64" width="160" height="300" rx="14"/>
+<text class="sf-panel-title" x="538" y="92" data-pt="PAINEL ÚNICO" data-en="SINGLE DASHBOARD">PAINEL ÚNICO</text>
+<rect class="sf-kpi" style="--i:0" x="538" y="108" width="40" height="28" rx="6"/>
+<rect class="sf-kpi" style="--i:1" x="584" y="108" width="40" height="28" rx="6"/>
+<rect class="sf-kpi" style="--i:2" x="630" y="108" width="40" height="28" rx="6"/>
+<line class="sf-base" x1="538" y1="330" x2="662" y2="330"/>
+<rect class="sf-bar" style="--i:0" x="538" y="282" width="17" height="48" rx="3"/>
+<rect class="sf-bar" style="--i:1" x="563" y="252" width="17" height="78" rx="3"/>
+<rect class="sf-bar" style="--i:2" x="588" y="268" width="17" height="62" rx="3"/>
+<rect class="sf-bar" style="--i:3" x="613" y="226" width="17" height="104" rx="3"/>
+<rect class="sf-bar hot" style="--i:4" x="638" y="242" width="17" height="88" rx="3"/>
+<path class="sf-trend sf-draw" pathLength="1" style="--i:0" d="M546 270 L571 244 L596 252 L621 222 L646 198"/>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="4.2s" begin="6.2s" repeatCount="indefinite"><mpath href="#sfp0"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="4.2s" begin="6.2s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="4.2s" begin="6.75s" repeatCount="indefinite"><mpath href="#sfp1"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="4.2s" begin="6.75s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="4.2s" begin="7.300000000000001s" repeatCount="indefinite"><mpath href="#sfp2"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="4.2s" begin="7.300000000000001s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="4.2s" begin="7.8500000000000005s" repeatCount="indefinite"><mpath href="#sfp3"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="4.2s" begin="7.8500000000000005s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="4.2s" begin="8.4s" repeatCount="indefinite"><mpath href="#sfp4"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="4.2s" begin="8.4s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="4.2s" begin="8.95s" repeatCount="indefinite"><mpath href="#sfp5"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="4.2s" begin="8.95s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="4.2s" begin="9.5s" repeatCount="indefinite"><mpath href="#sfp6"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="4.2s" begin="9.5s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3.6" opacity="0"><animateMotion dur="1.6s" begin="7s" repeatCount="indefinite"><mpath href="#sfpt"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.85;1" dur="1.6s" begin="7s" repeatCount="indefinite"/></circle>
+</svg>
+<svg class="sf-svg sf-svg-m" viewBox="0 0 340 250" role="img" aria-labelledby="sfM">
+<title id="sfM" data-pt="Quatro sistemas separados (Excel, CRM, email e ERP) que se ligam, automatizam e acabam num único painel" data-en="Four separate systems (Excel, CRM, email and ERP) that connect, automate and end in a single dashboard">Quatro sistemas separados (Excel, CRM, email e ERP) que se ligam, automatizam e acabam num único painel</title>
+<path class="sf-wire sf-draw" style="--i:0" pathLength="1" d="M92 34 H116"/>
+<path class="sf-wire sf-draw" style="--i:1" pathLength="1" d="M92 92 H116"/>
+<path class="sf-wire sf-draw" style="--i:2" pathLength="1" d="M92 150 H116"/>
+<path class="sf-wire sf-draw" style="--i:3" pathLength="1" d="M92 208 H116"/>
+<path class="sf-wire sf-draw sf-rail" pathLength="1" d="M116 34 V208"/>
+<path class="sf-wire sf-draw sf-trunk" style="animation-delay:2.9s" pathLength="1" d="M116 121 H130"/>
+<path class="sf-wire sf-draw sf-trunk" pathLength="1" d="M208 121 H236"/>
+<circle class="sf-dot" cx="116" cy="34" r="2.8"/>
+<circle class="sf-dot" cx="116" cy="92" r="2.8"/>
+<circle class="sf-dot" cx="116" cy="150" r="2.8"/>
+<circle class="sf-dot" cx="116" cy="208" r="2.8"/>
+<path id="sfm0" d="M92 34 H116 V121 H130" fill="none"/>
+<path id="sfm1" d="M92 92 H116 V121 H130" fill="none"/>
+<path id="sfm2" d="M92 150 H116 V121 H130" fill="none"/>
+<path id="sfm3" d="M92 208 H116 V121 H130" fill="none"/>
+<path id="sfmt" d="M208 121 H236" fill="none"/>
+<g class="sf-chip" style="--i:0;--dx:-8px;--dy:-8px;--r:-4deg"><rect x="0.6" y="18" width="91" height="32" rx="8"/><text x="12" y="38.5">Excel</text></g>
+<g class="sf-chip" style="--i:1;--dx:12px;--dy:6px;--r:3deg"><rect x="0.6" y="76" width="91" height="32" rx="8"/><text x="12" y="96.5">CRM</text></g>
+<g class="sf-chip" style="--i:2;--dx:-8px;--dy:8px;--r:-3deg"><rect x="0.6" y="134" width="91" height="32" rx="8"/><text x="12" y="154.5">Email</text></g>
+<g class="sf-chip" style="--i:3;--dx:10px;--dy:-8px;--r:4deg"><rect x="0.6" y="192" width="91" height="32" rx="8"/><text x="12" y="212.5">ERP</text></g>
+<g class="sf-rule"><rect class="sf-ring" x="130" y="97" width="78" height="48" rx="10"/><rect class="sf-rule-box" x="130" y="97" width="78" height="48" rx="10"/><text x="169" y="118" text-anchor="middle" data-pt="REGRA" data-en="RULE">REGRA</text><text class="sf-rule-sub" x="169" y="133" text-anchor="middle" data-pt="se → então" data-en="if → then">se → então</text></g>
+<rect class="sf-panel" x="236" y="21" width="104" height="200" rx="12"/>
+<rect class="sf-kpi" style="--i:0" x="248" y="36" width="38" height="22" rx="5" transform="translate(0 0)"/>
+<rect class="sf-kpi" style="--i:1" x="248" y="36" width="38" height="22" rx="5" transform="translate(44 0)"/>
+<line class="sf-base" x1="248" y1="196" x2="328" y2="196"/>
+<rect class="sf-bar" style="--i:0" x="250" y="162" width="14" height="34" rx="3"/>
+<rect class="sf-bar" style="--i:1" x="270" y="138" width="14" height="58" rx="3"/>
+<rect class="sf-bar" style="--i:2" x="290" y="150" width="14" height="46" rx="3"/>
+<rect class="sf-bar hot" style="--i:3" x="310" y="118" width="14" height="78" rx="3"/>
+<path class="sf-trend sf-draw" pathLength="1" d="M257 140 L277 124 L297 130 L317 104"/>
+<circle class="sf-packet" r="3" opacity="0"><animateMotion dur="3.6s" begin="6.2s" repeatCount="indefinite"><mpath href="#sfm0"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="3.6s" begin="6.2s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3" opacity="0"><animateMotion dur="3.6s" begin="6.9s" repeatCount="indefinite"><mpath href="#sfm1"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="3.6s" begin="6.9s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3" opacity="0"><animateMotion dur="3.6s" begin="7.6s" repeatCount="indefinite"><mpath href="#sfm2"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="3.6s" begin="7.6s" repeatCount="indefinite"/></circle>
+<circle class="sf-packet" r="3" opacity="0"><animateMotion dur="3.6s" begin="8.3s" repeatCount="indefinite"><mpath href="#sfm3"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="3.6s" begin="8.3s" repeatCount="indefinite"/></circle>
+</svg>
+                <ol class="sf-stages" aria-label="Fases">
+                    <li class="sf-stage" style="--t:0s" data-pt="<b>01</b>Fragmentação" data-en="<b>01</b>Fragmentation"><b>01</b>Fragmentação</li>
+                    <li class="sf-stage" style="--t:1.7s" data-pt="<b>02</b>Conexão" data-en="<b>02</b>Connection"><b>02</b>Conexão</li>
+                    <li class="sf-stage" style="--t:3.3s" data-pt="<b>03</b>Automação" data-en="<b>03</b>Automation"><b>03</b>Automação</li>
+                    <li class="sf-stage" style="--t:4.4s" data-pt="<b>04</b>Visibilidade" data-en="<b>04</b>Visibility"><b>04</b>Visibilidade</li>
+                </ol>
             </div>
-
-            <figcaption data-pt="Ferramentas que não comunicam entre si, ligadas num único painel."
-                        data-en="Tools that don't talk to each other, connected into a single dashboard.">Ferramentas que não comunicam entre si, ligadas num único painel.</figcaption>
         </figure>
     </div>
 </section>
@@ -179,35 +181,32 @@
 <section class="section" id="sinais">
     <div class="wrap">
         <div class="section-head reveal">
+            <p class="eyebrow" data-pt="Sinais" data-en="Signals">Sinais</p>
             <h2 data-pt="Quando faz sentido falar connosco" data-en="When it makes sense to talk to us">Quando faz sentido falar connosco</h2>
-            <p data-pt="Se reconhece uma destas situações, provavelmente podemos ajudar."
-               data-en="If you recognise one of these situations, we can probably help.">Se reconhece uma destas situações, provavelmente podemos ajudar.</p>
+            <p data-pt="Se reconhece uma destas situações, provavelmente podemos ajudar." data-en="If you recognise one of these situations, we can probably help.">Se reconhece uma destas situações, provavelmente podemos ajudar.</p>
         </div>
 
-        <ul class="signals">
-            <li class="reveal">
-                <span class="sig-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg></span>
+        <ol class="signals">
+            <li class="signal reveal" style="--d:0s">
+                <span class="signal-n" aria-hidden="true">01</span>
                 <h3 data-pt="Tempo perdido em tarefas repetitivas" data-en="Time lost on repetitive tasks">Tempo perdido em tarefas repetitivas</h3>
-                <p data-pt="A equipa dedica horas a tarefas administrativas que podiam ser automatizadas. Admissões, faturação, gestão de stock: tudo ainda depende de Excel ou de sistemas que não comunicam entre si."
-                   data-en="Your team spends hours on administrative tasks that could be automated. Onboarding, invoicing, stock management: everything still depends on Excel or on systems that don't talk to each other.">A equipa dedica horas a tarefas administrativas que podiam ser automatizadas. Admissões, faturação, gestão de stock: tudo ainda depende de Excel ou de sistemas que não comunicam entre si.</p>
+                <p data-pt="A equipa dedica horas a tarefas administrativas que podiam ser automatizadas. Admissões, faturação, gestão de stock: tudo ainda depende de Excel ou de sistemas que não comunicam entre si." data-en="Your team spends hours on administrative tasks that could be automated. Onboarding, invoicing, stock management: everything still depends on Excel or on systems that don’t talk to each other.">A equipa dedica horas a tarefas administrativas que podiam ser automatizadas. Admissões, faturação, gestão de stock: tudo ainda depende de Excel ou de sistemas que não comunicam entre si.</p>
             </li>
-            <li class="reveal" style="--d:0.1s">
-                <span class="sig-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <li class="signal reveal" style="--d:0.08s">
+                <span class="signal-n" aria-hidden="true">02</span>
                 <h3 data-pt="Decisões sem dados atualizados" data-en="Decisions without up-to-date data">Decisões sem dados atualizados</h3>
-                <p data-pt="Perguntas simples sobre o negócio, como vendas do mês, melhores clientes ou margem por serviço, demoram dias a ter resposta. A informação está dispersa e raramente atualizada."
-                   data-en="Simple questions about the business, such as monthly sales, best clients or margin per service, take days to answer. The information is scattered and rarely current.">Perguntas simples sobre o negócio, como vendas do mês, melhores clientes ou margem por serviço, demoram dias a ter resposta. A informação está dispersa e raramente atualizada.</p>
+                <p data-pt="Perguntas simples sobre o negócio, como vendas do mês, melhores clientes ou margem por serviço, demoram dias a ter resposta. A informação está dispersa e raramente atualizada." data-en="Simple questions about the business, such as monthly sales, best clients or margin per service, take days to answer. The information is scattered and rarely current.">Perguntas simples sobre o negócio, como vendas do mês, melhores clientes ou margem por serviço, demoram dias a ter resposta. A informação está dispersa e raramente atualizada.</p>
             </li>
-            <li class="reveal" style="--d:0.2s">
-                <span class="sig-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></span>
+            <li class="signal reveal" style="--d:0.16s">
+                <span class="signal-n" aria-hidden="true">03</span>
                 <h3 data-pt="Tecnologia comprada, mas subutilizada" data-en="Technology bought but underused">Tecnologia comprada, mas subutilizada</h3>
-                <p data-pt="Sistemas adquiridos e nunca implementados como deviam. Ferramentas que não se integram e acabam por dar mais trabalho do que poupam."
-                   data-en="Systems that were acquired and never properly implemented. Tools that don't integrate and end up creating more work than they save.">Sistemas adquiridos e nunca implementados como deviam. Ferramentas que não se integram e acabam por dar mais trabalho do que poupam.</p>
+                <p data-pt="Sistemas adquiridos e nunca implementados como deviam. Ferramentas que não se integram e acabam por dar mais trabalho do que poupam." data-en="Systems that were acquired and never properly implemented. Tools that don’t integrate and end up creating more work than they save.">Sistemas adquiridos e nunca implementados como deviam. Ferramentas que não se integram e acabam por dar mais trabalho do que poupam.</p>
             </li>
-        </ul>
+        </ol>
 
         <p class="fit reveal"
-           data-pt="Trabalhamos habitualmente com equipas de 5 a 50 pessoas, em todo o país e à distância. Em Lisboa e Setúbal, também fazemos reuniões presenciais."
-           data-en="We usually work with teams of 5 to 50 people, across the country and remotely. In Lisbon and Setúbal we also hold in-person meetings.">Trabalhamos habitualmente com equipas de 5 a 50 pessoas, em todo o país e à distância. Em Lisboa e Setúbal, também fazemos reuniões presenciais.</p>
+           data-pt="As nossas soluções são pensadas sobretudo para equipas de 5 a 50 pessoas, em Portugal e à distância. Em Lisboa e Setúbal, também fazemos reuniões presenciais."
+           data-en="Our solutions are designed mainly for teams of 5 to 50 people, in Portugal and remotely. In Lisbon and Setúbal we also hold in-person meetings.">As nossas soluções são pensadas sobretudo para equipas de 5 a 50 pessoas, em Portugal e à distância. Em Lisboa e Setúbal, também fazemos reuniões presenciais.</p>
     </div>
 </section>
 
@@ -215,136 +214,148 @@
 <section class="section band" id="servicos">
     <div class="wrap">
         <div class="section-head reveal">
+            <p class="eyebrow" data-pt="Serviços" data-en="Services">Serviços</p>
             <h2 data-pt="O que implementamos" data-en="What we implement">O que implementamos</h2>
-            <p data-pt="Três áreas onde as PMEs mais ganham com uma execução dedicada. Trabalhamos com as ferramentas que a empresa já usa, sem substituir tudo desnecessariamente."
-               data-en="Three areas where SMEs gain the most from dedicated execution. We work with the tools your company already uses, without replacing everything unnecessarily.">Três áreas onde as PMEs mais ganham com uma execução dedicada. Trabalhamos com as ferramentas que a empresa já usa, sem substituir tudo desnecessariamente.</p>
+            <p data-pt="Três áreas onde as PMEs mais ganham com uma execução dedicada. Trabalhamos com as ferramentas que a empresa já usa, sem substituir tudo desnecessariamente." data-en="Three areas where SMEs gain the most from dedicated execution. We work with the tools your company already uses, without replacing everything unnecessarily.">Três áreas onde as PMEs mais ganham com uma execução dedicada. Trabalhamos com as ferramentas que a empresa já usa, sem substituir tudo desnecessariamente.</p>
         </div>
 
-        <div class="bento">
-
-            <!-- Automação -->
-            <article class="tile tile-wide tile-dark reveal">
-                <div class="tile-copy">
+        <div class="pillars">
+            <article class="pillar reveal" id="p-automacao">
+                <div class="pillar-copy">
+                    <span class="pillar-n" aria-hidden="true">01</span>
                     <h3 data-pt="Automação de processos" data-en="Process automation">Automação de processos</h3>
-                    <p class="tile-label" data-pt="O que resolve" data-en="What it solves">O que resolve</p>
-                    <p data-pt="Tarefas repetitivas que hoje dependem de pessoas: envio de emails, atualização de ficheiros, passagem de dados de um programa para outro."
-                       data-en="Repetitive tasks that today depend on people: sending emails, updating files, moving data from one program to another.">Tarefas repetitivas que hoje dependem de pessoas: envio de emails, atualização de ficheiros, passagem de dados de um programa para outro.</p>
-                    <p class="tile-label" data-pt="O que fica a funcionar" data-en="What you end up with">O que fica a funcionar</p>
-                    <p data-pt="Fluxos automáticos entre as ferramentas que já usa, com menos erros e mais tempo para o trabalho que acrescenta valor."
-                       data-en="Automatic flows between the tools you already use, with fewer errors and more time for work that adds value.">Fluxos automáticos entre as ferramentas que já usa, com menos erros e mais tempo para o trabalho que acrescenta valor.</p>
-                    <a class="link tile-link" href="servicos.html#automacao" data-pt="Ver detalhe" data-en="See details">Ver detalhe</a>
+                    <div class="pillar-cols">
+                        <div>
+                            <p class="label" data-pt="O que resolve" data-en="What it solves">O que resolve</p>
+                            <p data-pt="Tarefas repetitivas que hoje dependem de pessoas: envio de emails, atualização de ficheiros, passagem de dados de um programa para outro." data-en="Repetitive tasks that today depend on people: sending emails, updating files, moving data from one program to another.">Tarefas repetitivas que hoje dependem de pessoas: envio de emails, atualização de ficheiros, passagem de dados de um programa para outro.</p>
+                        </div>
+                        <div>
+                            <p class="label" data-pt="O que fica a funcionar" data-en="What you end up with">O que fica a funcionar</p>
+                            <p data-pt="Fluxos automáticos entre as ferramentas que já usa, com menos erros e mais tempo para o trabalho que acrescenta valor." data-en="Automatic flows between the tools you already use, with fewer errors and more time for work that adds value.">Fluxos automáticos entre as ferramentas que já usa, com menos erros e mais tempo para o trabalho que acrescenta valor.</p>
+                        </div>
+                    </div>
+                    <a class="link pillar-link" href="servicos.html#automacao" data-pt="Ver detalhe" data-en="See details">Ver detalhe</a>
                 </div>
-                <div class="tile-art">
-                    <svg viewBox="0 0 440 170" role="img" aria-labelledby="artA">
-                        <title id="artA" data-pt="Um evento dispara uma regra, que executa uma ação" data-en="An event triggers a rule, which runs an action">Um evento dispara uma regra, que executa uma ação</title>
-                        <path id="artAline" class="art-wire" d="M20 85 H420"/>
-                        <path class="art-line draw" pathLength="1" d="M20 85 H420"/>
-                        <circle class="packet" r="5" opacity="0"><animateMotion dur="3.4s" begin="1.4s" repeatCount="indefinite"><mpath href="#artAline"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" dur="3.4s" begin="1.4s" repeatCount="indefinite"/></circle>
-                        <rect class="art-node" x="0.75" y="55" width="118.5" height="60" rx="10"/>
-                        <text x="60" y="91" text-anchor="middle" data-pt="Evento" data-en="Trigger">Evento</text>
-                        <rect class="art-node" x="160.75" y="55" width="118.5" height="60" rx="10"/>
-                        <text x="220" y="91" text-anchor="middle" data-pt="Regra" data-en="Rule">Regra</text>
-                        <rect class="art-accent" x="320" y="54" width="120" height="62" rx="10"/>
-                        <text class="art-accent-text" x="380" y="91" text-anchor="middle" data-pt="Ação" data-en="Action">Ação</text>
-                        <path class="art-line" d="M137 76 L148 85 L137 94"/>
-                        <path class="art-line" d="M297 76 L308 85 L297 94"/>
-                    </svg>
+                <div class="pillar-art">
+<svg viewBox="0 0 422 130" role="img" aria-labelledby="artA"><title id="artA" data-pt="Um evento dispara uma regra, que executa uma ação" data-en="An event triggers a rule, which runs an action">Um evento dispara uma regra, que executa uma ação</title><rect class="art-node" x="0.6" y="31" width="118" height="52" rx="10"/><text x="59.6" y="61" text-anchor="middle" data-pt="Evento" data-en="Trigger">Evento</text><rect class="art-node" x="151.6" y="31" width="118" height="52" rx="10"/><text x="210.6" y="61" text-anchor="middle" data-pt="Regra" data-en="Rule">Regra</text><rect class="art-accent" x="302.6" y="31" width="118" height="52" rx="10"/><text class="art-accent-text" x="361.6" y="61" text-anchor="middle" data-pt="Ação" data-en="Action">Ação</text><path class="art-wire" d="M122 57 H149"/><path class="art-line draw" style="--i:0" pathLength="1" d="M122 57 H149"/><path class="art-line" d="M141 50 L149 57 L141 64"/><path class="art-wire" d="M273 57 H300"/><path class="art-line draw" style="--i:1" pathLength="1" d="M273 57 H300"/><path class="art-line" d="M292 50 L300 57 L292 64"/><text class="cap" x="0" y="116" data-pt="evento → regra → ação" data-en="trigger → rule → action">evento → regra → ação</text></svg>
                 </div>
             </article>
-
-            <!-- Business Intelligence -->
-            <article class="tile reveal" style="--d:0.08s">
-                <div class="tile-copy">
+            <article class="pillar reveal" id="p-bi">
+                <div class="pillar-copy">
+                    <span class="pillar-n" aria-hidden="true">02</span>
                     <h3 data-pt="Business Intelligence" data-en="Business Intelligence">Business Intelligence</h3>
-                    <p class="tile-label" data-pt="O que resolve" data-en="What it solves">O que resolve</p>
-                    <p data-pt="Vendas, clientes e resultados espalhados por várias folhas e relatórios feitos à mão."
-                       data-en="Sales, clients and results scattered across several spreadsheets and hand-made reports.">Vendas, clientes e resultados espalhados por várias folhas e relatórios feitos à mão.</p>
-                    <p class="tile-label" data-pt="O que fica a funcionar" data-en="What you end up with">O que fica a funcionar</p>
-                    <p data-pt="Painéis atualizados automaticamente, no telemóvel ou no computador, com os indicadores certos para o negócio e relatórios sem trabalho manual."
-                       data-en="Automatically updated dashboards on phone or computer, with the right indicators for your business and reports with no manual work.">Painéis atualizados automaticamente, no telemóvel ou no computador, com os indicadores certos para o negócio e relatórios sem trabalho manual.</p>
-                    <a class="link tile-link" href="servicos.html#bi" data-pt="Ver detalhe" data-en="See details">Ver detalhe</a>
+                    <div class="pillar-cols">
+                        <div>
+                            <p class="label" data-pt="O que resolve" data-en="What it solves">O que resolve</p>
+                            <p data-pt="Vendas, clientes e resultados espalhados por várias folhas e relatórios feitos à mão." data-en="Sales, clients and results scattered across several spreadsheets and hand-made reports.">Vendas, clientes e resultados espalhados por várias folhas e relatórios feitos à mão.</p>
+                        </div>
+                        <div>
+                            <p class="label" data-pt="O que fica a funcionar" data-en="What you end up with">O que fica a funcionar</p>
+                            <p data-pt="Painéis atualizados automaticamente, no telemóvel ou no computador, com os indicadores certos para o negócio e relatórios sem trabalho manual." data-en="Automatically updated dashboards on phone or computer, with the right indicators for your business and reports with no manual work.">Painéis atualizados automaticamente, no telemóvel ou no computador, com os indicadores certos para o negócio e relatórios sem trabalho manual.</p>
+                        </div>
+                    </div>
+                    <a class="link pillar-link" href="servicos.html#bi" data-pt="Ver detalhe" data-en="See details">Ver detalhe</a>
                 </div>
-                <div class="tile-art">
-                    <svg viewBox="0 0 360 150" role="img" aria-labelledby="artB">
-                        <title id="artB" data-pt="Gráfico de barras com tendência a subir" data-en="Bar chart with a rising trend">Gráfico de barras com tendência a subir</title>
-                        <line class="art-base" x1="10" y1="130" x2="350" y2="130"/>
-                        <rect class="art-bar t-bar" style="--i:0" x="24" y="100" width="28" height="30" rx="3"/>
-                        <rect class="art-bar t-bar" style="--i:1" x="70" y="78" width="28" height="52" rx="3"/>
-                        <rect class="art-bar t-bar" style="--i:2" x="116" y="86" width="28" height="44" rx="3"/>
-                        <rect class="art-bar t-bar" style="--i:3" x="162" y="60" width="28" height="70" rx="3"/>
-                        <rect class="art-bar t-bar" style="--i:4" x="208" y="68" width="28" height="62" rx="3"/>
-                        <rect class="art-bar t-bar" style="--i:5" x="254" y="38" width="28" height="92" rx="3"/>
-                        <rect class="art-bar hot t-bar" style="--i:6" x="300" y="22" width="28" height="108" rx="3"/>
-                        <path class="art-line draw" pathLength="1" d="M38 88 L84 66 L130 74 L176 48 L222 56 L268 26 L314 10"/>
-                    </svg>
+                <div class="pillar-art">
+<svg viewBox="0 0 422 130" role="img" aria-labelledby="artB"><title id="artB" data-pt="Dados passam por análise e chegam a um dashboard" data-en="Data goes through analysis and reaches a dashboard">Dados passam por análise e chegam a um dashboard</title><rect class="art-node" x="0.6" y="31" width="118" height="52" rx="10"/><text x="59.6" y="61" text-anchor="middle" data-pt="Dados" data-en="Data">Dados</text><rect class="art-node" x="151.6" y="31" width="118" height="52" rx="10"/><text x="210.6" y="61" text-anchor="middle" data-pt="Análise" data-en="Analysis">Análise</text><rect class="art-accent" x="302.6" y="31" width="118" height="52" rx="10"/><text class="art-accent-text" x="361.6" y="61" text-anchor="middle" data-pt="Dashboard" data-en="Dashboard">Dashboard</text><path class="art-wire" d="M122 57 H149"/><path class="art-line draw" style="--i:0" pathLength="1" d="M122 57 H149"/><path class="art-line" d="M141 50 L149 57 L141 64"/><path class="art-wire" d="M273 57 H300"/><path class="art-line draw" style="--i:1" pathLength="1" d="M273 57 H300"/><path class="art-line" d="M292 50 L300 57 L292 64"/><text class="cap" x="0" y="116" data-pt="dados → análise → dashboard" data-en="data → analysis → dashboard">dados → análise → dashboard</text></svg>
                 </div>
             </article>
-
-            <!-- Integração e segurança -->
-            <article class="tile reveal" style="--d:0.16s">
-                <div class="tile-copy">
+            <article class="pillar reveal" id="p-integracao">
+                <div class="pillar-copy">
+                    <span class="pillar-n" aria-hidden="true">03</span>
                     <h3 data-pt="Integração e segurança de dados" data-en="Data integration and security">Integração e segurança de dados</h3>
-                    <p class="tile-label" data-pt="O que resolve" data-en="What it solves">O que resolve</p>
-                    <p data-pt="Dados espalhados por vários programas que não comunicam entre si."
-                       data-en="Data scattered across several programs that don't talk to each other.">Dados espalhados por vários programas que não comunicam entre si.</p>
-                    <p class="tile-label" data-pt="O que fica a funcionar" data-en="What you end up with">O que fica a funcionar</p>
-                    <p data-pt="Programas ligados, dados protegidos com cópias de segurança e acesso controlado por utilizador."
-                       data-en="Connected programs, data protected with backups and access controlled per user.">Programas ligados, dados protegidos com cópias de segurança e acesso controlado por utilizador.</p>
-                    <a class="link tile-link" href="servicos.html#integracao" data-pt="Ver detalhe" data-en="See details">Ver detalhe</a>
+                    <div class="pillar-cols">
+                        <div>
+                            <p class="label" data-pt="O que resolve" data-en="What it solves">O que resolve</p>
+                            <p data-pt="Dados espalhados por vários programas que não comunicam entre si." data-en="Data scattered across several programs that don’t talk to each other.">Dados espalhados por vários programas que não comunicam entre si.</p>
+                        </div>
+                        <div>
+                            <p class="label" data-pt="O que fica a funcionar" data-en="What you end up with">O que fica a funcionar</p>
+                            <p data-pt="Programas ligados, dados protegidos com cópias de segurança e acesso controlado por utilizador." data-en="Connected programs, data protected with backups and access controlled per user.">Programas ligados, dados protegidos com cópias de segurança e acesso controlado por utilizador.</p>
+                        </div>
+                    </div>
+                    <a class="link pillar-link" href="servicos.html#integracao" data-pt="Ver detalhe" data-en="See details">Ver detalhe</a>
                 </div>
-                <div class="tile-art">
-                    <svg viewBox="0 0 360 150" role="img" aria-labelledby="artC">
-                        <title id="artC" data-pt="Dois programas ligados entre si por uma ligação protegida" data-en="Two programs connected through a protected link">Dois programas ligados entre si por uma ligação protegida</title>
-                        <path id="artCtop" class="art-wire" d="M106 62 H254"/>
-                        <path id="artCbot" class="art-wire" d="M254 88 H106"/>
-                        <path class="art-line draw" pathLength="1" d="M106 62 H254"/>
-                        <path class="art-line draw" pathLength="1" d="M254 88 H106"/>
-                        <circle class="packet" r="4.5" opacity="0"><animateMotion dur="2.6s" begin="1.2s" repeatCount="indefinite"><mpath href="#artCtop"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="2.6s" begin="1.2s" repeatCount="indefinite"/></circle>
-                        <circle class="packet" r="4.5" opacity="0"><animateMotion dur="2.6s" begin="2.5s" repeatCount="indefinite"><mpath href="#artCbot"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="2.6s" begin="2.5s" repeatCount="indefinite"/></circle>
-                        <rect class="art-node" x="10.75" y="42" width="95" height="66" rx="10"/>
-                        <text x="58" y="80" text-anchor="middle" data-pt="Sistema A" data-en="System A">Sistema A</text>
-                        <rect class="art-node" x="254.25" y="42" width="95" height="66" rx="10"/>
-                        <text x="302" y="80" text-anchor="middle" data-pt="Sistema B" data-en="System B">Sistema B</text>
-                        <rect class="art-accent" x="150" y="36" width="60" height="78" rx="12"/>
-                        <rect x="168" y="72" width="24" height="20" rx="4" fill="#fff"/>
-                        <path d="M172 72 V64 a8 8 0 0 1 16 0 V72" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-                    </svg>
+                <div class="pillar-art">
+<svg viewBox="0 0 422 130" role="img" aria-labelledby="artC"><title id="artC" data-pt="Dois sistemas ligados por uma integração, com dados nos dois sentidos" data-en="Two systems connected by an integration, with data flowing both ways">Dois sistemas ligados por uma integração, com dados nos dois sentidos</title><rect class="art-node" x="0.6" y="31" width="118" height="52" rx="10"/><text x="59.6" y="61" text-anchor="middle" data-pt="Sistema A" data-en="System A">Sistema A</text><rect class="art-accent" x="151.6" y="31" width="118" height="52" rx="10"/><text class="art-accent-text" x="210.6" y="61" text-anchor="middle" data-pt="Integração" data-en="Integration">Integração</text><rect class="art-node" x="302.6" y="31" width="118" height="52" rx="10"/><text x="361.6" y="61" text-anchor="middle" data-pt="Sistema B" data-en="System B">Sistema B</text><path class="art-wire" d="M122 57 H149"/><path class="art-line draw" style="--i:0" pathLength="1" d="M122 57 H149"/><path class="art-line" d="M141 50 L149 57 L141 64"/><path class="art-line" d="M130 50 L122 57 L130 64"/><path class="art-wire" d="M273 57 H300"/><path class="art-line draw" style="--i:1" pathLength="1" d="M273 57 H300"/><path class="art-line" d="M292 50 L300 57 L292 64"/><path class="art-line" d="M281 50 L273 57 L281 64"/><text class="cap" x="0" y="116" data-pt="sistema A ↔ integração ↔ sistema B" data-en="system A ↔ integration ↔ system B">sistema A ↔ integração ↔ sistema B</text></svg>
                 </div>
             </article>
         </div>
 
         <div class="services-note reveal">
-            <p data-pt="Cada implementação é adaptada ao contexto da empresa. Uma conversa de 15 minutos chega para perceber a melhor abordagem."
-               data-en="Every implementation is adapted to the company's context. A 15-minute conversation is enough to work out the best approach.">Cada implementação é adaptada ao contexto da empresa. Uma conversa de 15 minutos chega para perceber a melhor abordagem.</p>
+            <p data-pt="Cada implementação é adaptada ao contexto da empresa. Uma conversa de 15 minutos chega para perceber a melhor abordagem." data-en="Every implementation is adapted to the company's context. A 15-minute conversation is enough to work out the best approach.">Cada implementação é adaptada ao contexto da empresa. Uma conversa de 15 minutos chega para perceber a melhor abordagem.</p>
             <a href="contacto.html#formulario" class="link" data-pt="Marcar conversa inicial" data-en="Book an initial call">Marcar conversa inicial</a>
         </div>
     </div>
 </section>
 
-
 <!-- Método em resumo -->
 <section class="section" id="metodo">
     <div class="wrap">
         <div class="section-head reveal">
+            <p class="eyebrow" data-pt="Método" data-en="Method">Método</p>
             <h2 data-pt="Como trabalhamos" data-en="How we work">Como trabalhamos</h2>
             <p data-pt="Simples e sem surpresas: antes de começar, sabe o que vai acontecer, quando e por que investimento." data-en="Simple and no surprises: before we start, you know what will happen, when, and at what investment.">Simples e sem surpresas: antes de começar, sabe o que vai acontecer, quando e por que investimento.</p>
         </div>
 
-        <ol class="mini-steps">
-            <li class="reveal"><span class="n">1</span><h3 data-pt="Conversa inicial" data-en="Initial conversation">Conversa inicial</h3><p data-pt="15 a 30 minutos" data-en="15 to 30 minutes">15 a 30 minutos</p></li>
-            <li class="reveal" style="--d:0.08s"><span class="n">2</span><h3 data-pt="Proposta" data-en="Proposal">Proposta</h3><p data-pt="Entregue em 24 a 48 horas" data-en="Delivered in 24 to 48 hours">Entregue em 24 a 48 horas</p></li>
-            <li class="reveal" style="--d:0.16s"><span class="n">3</span><h3 data-pt="Implementação faseada" data-en="Phased implementation">Implementação faseada</h3><p data-pt="Entregas semanais" data-en="Weekly deliveries">Entregas semanais</p></li>
-            <li class="reveal" style="--d:0.24s"><span class="n">4</span><h3 data-pt="Acompanhamento" data-en="Support">Acompanhamento</h3><p data-pt="30 dias incluídos" data-en="30 days included">30 dias incluídos</p></li>
+        <ol class="flow-steps reveal-group">
+            <li class="flow-step" style="--i:0"><span class="n" aria-hidden="true">01</span><h3 data-pt="Conversa inicial" data-en="Initial conversation">Conversa inicial</h3><p data-pt="15 a 30 minutos" data-en="15 to 30 minutes">15 a 30 minutos</p></li>
+            <li class="flow-step" style="--i:1"><span class="n" aria-hidden="true">02</span><h3 data-pt="Proposta" data-en="Proposal">Proposta</h3><p data-pt="Entregue em 24 a 48 horas" data-en="Delivered in 24 to 48 hours">Entregue em 24 a 48 horas</p></li>
+            <li class="flow-step" style="--i:2"><span class="n" aria-hidden="true">03</span><h3 data-pt="Implementação faseada" data-en="Phased implementation">Implementação faseada</h3><p data-pt="Entregas semanais" data-en="Weekly deliveries">Entregas semanais</p></li>
+            <li class="flow-step" style="--i:3"><span class="n" aria-hidden="true">04</span><h3 data-pt="Acompanhamento" data-en="Support">Acompanhamento</h3><p data-pt="30 dias incluídos" data-en="30 days included">30 dias incluídos</p></li>
         </ol>
 
         <p class="more reveal"><a class="link" href="metodo.html" data-pt="Ver o método completo e os prazos" data-en="See the full method and timeframes">Ver o método completo e os prazos</a></p>
     </div>
 </section>
 
-<!-- Equipa em resumo -->
-<section class="section band" id="equipa">
+<!-- Projetos: estrutura pronta, sem casos inventados -->
+<section class="section band" id="projetos">
     <div class="wrap">
         <div class="section-head reveal">
+            <p class="eyebrow" data-pt="Projetos" data-en="Projects">Projetos</p>
+            <h2 data-pt="Trabalho que podemos mostrar" data-en="Work we can show">Trabalho que podemos mostrar</h2>
+            <p data-pt="Só publicamos aqui o que se pode verificar: o problema, o que foi construído e o resultado observado." data-en="We only publish what can be verified: the problem, what was built and the observed result.">Só publicamos aqui o que se pode verificar: o problema, o que foi construído e o resultado observado.</p>
+        </div>
+
+        <ul class="projects-cats reveal" aria-label="Categorias">
+            <li data-pt="Projeto cliente" data-en="Client project">Projeto cliente</li>
+            <li data-pt="Em implementação" data-en="In progress">Em implementação</li>
+            <li data-pt="Lab" data-en="Lab">Lab</li>
+            <li data-pt="Projeto técnico" data-en="Technical project">Projeto técnico</li>
+        </ul>
+
+        <!-- Para adicionar um projeto, copiar este modelo para dentro de .projects-list
+             e preencher só com informação verificável (ver README):
+        <article class="project">
+            <p class="label">PROJETO CLIENTE | EM IMPLEMENTAÇÃO | LAB | PROJETO TÉCNICO</p>
+            <h3>Nome do projeto</h3>
+            <dl>
+                <div><dt>Problema</dt><dd>...</dd></div>
+                <div><dt>Solução</dt><dd>...</dd></div>
+                <div><dt>O que foi construído</dt><dd>...</dd></div>
+                <div><dt>Tecnologias</dt><dd>...</dd></div>
+                <div><dt>Resultado observado</dt><dd>...</dd></div>
+            </dl>
+            <img src="img/projeto-nome.webp" alt="..." width="..." height="..." loading="lazy">
+        </article>
+        -->
+
+        <div class="projects-empty reveal">
+            <div>
+                <h3 data-pt="Os primeiros casos entram aqui" data-en="The first cases will appear here">Os primeiros casos entram aqui</h3>
+                <p data-pt="Estamos a documentar os primeiros projetos. Cada um terá o problema, a solução, o que foi construído, as tecnologias e o resultado observado, sem números inventados." data-en="We are documenting our first projects. Each one will have the problem, the solution, what was built, the technologies and the observed result, with no invented numbers.">Estamos a documentar os primeiros projetos. Cada um terá o problema, a solução, o que foi construído, as tecnologias e o resultado observado, sem números inventados.</p>
+            </div>
+            <a href="contacto.html#formulario" class="btn btn-ghost" data-pt="Falar sobre o seu caso" data-en="Talk about your case">Falar sobre o seu caso</a>
+        </div>
+    </div>
+</section>
+
+<!-- Equipa em resumo -->
+<section class="section" id="equipa">
+    <div class="wrap">
+        <div class="section-head reveal">
+            <p class="eyebrow" data-pt="Pessoas" data-en="People">Pessoas</p>
             <h2 data-pt="As pessoas por trás da implementação" data-en="The people behind the implementation">As pessoas por trás da implementação</h2>
             <p data-pt="Fala diretamente com quem implementa." data-en="You speak directly with the people who build it.">Fala diretamente com quem implementa.</p>
         </div>
@@ -365,7 +376,7 @@
             <p data-pt="Uma conversa de 15 a 30 minutos para perceber se faz sentido trabalharmos juntos. Sem compromisso." data-en="A 15 to 30 minute conversation to see if it makes sense to work together. No commitment.">Uma conversa de 15 a 30 minutos para perceber se faz sentido trabalharmos juntos. Sem compromisso.</p>
         </div>
         <div class="cta-actions reveal" style="--d:0.1s">
-            <a href="contacto.html#formulario" class="btn btn-primary" data-pt="Marcar conversa inicial" data-en="Book an initial call">Marcar conversa inicial</a>
+            <a href="contacto.html#formulario" class="btn btn-primary"><span data-pt="Marcar conversa inicial" data-en="Book an initial call">Marcar conversa inicial</span><span class="arr" aria-hidden="true">→</span></a>
             <a href="https://wa.me/351910625090?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ImplementIQ%20Systems%20e%20gostaria%20de%20agendar%20uma%20conversa." data-href-pt="https://wa.me/351910625090?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20ImplementIQ%20Systems%20e%20gostaria%20de%20agendar%20uma%20conversa." data-href-en="https://wa.me/351910625090?text=Hello!%20I%20found%20ImplementIQ%20Systems%20online%20and%20would%20like%20to%20schedule%20a%20conversation." class="btn btn-ghost" target="_blank" rel="noopener noreferrer" data-pt="Conversar no WhatsApp" data-en="Chat on WhatsApp">Conversar no WhatsApp</a>
         </div>
     </div>
@@ -407,6 +418,5 @@
 </footer>
 
 <script src="core.js"></script>
-<script src="net.js"></script>
 </body>
 </html>
