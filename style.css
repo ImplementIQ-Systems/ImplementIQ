@@ -1366,3 +1366,47 @@ a { color: inherit; }
     .js .cta-flow path { stroke-dashoffset: 0; animation: none; }
     .js .cta-flow circle { opacity: 1; animation: none; }
 }
+
+/* Infrastructure layer (só no hero da home): textura técnica muito ténue atrás do
+   System Flow. Decorativa (aria-hidden), SVG + CSS, sem JavaScript.
+   Hierarquia: texto e CTAs, depois System Flow, depois esta camada. */
+#topo::before { display: none; } /* a grelha regular dá lugar a esta composição irregular */
+
+.infra {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* desvanece no fim do hero e atrás da coluna de texto */
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 50%, transparent 88%), linear-gradient(90deg, rgba(0, 0, 0, 0.3), #000 48%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(180deg, transparent 0, #000 14%, #000 50%, transparent 88%), linear-gradient(90deg, rgba(0, 0, 0, 0.3), #000 48%);
+    mask-composite: intersect;
+}
+
+.infra path, .infra circle { fill: none; stroke: none; }
+.infra path { stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.infra-far { stroke: rgba(255, 255, 255, 0.04); filter: blur(0.6px); }
+.infra-far path { stroke: rgba(255, 255, 255, 0.04); }
+.infra-near path { stroke: rgba(255, 255, 255, 0.06); }
+.infra-near path.acc { stroke: rgba(155, 148, 255, 0.13); }
+.infra-nodes circle { fill: rgba(255, 255, 255, 0.06); }
+.infra-nodes circle.a { fill: rgba(155, 148, 255, 0.14); }
+.infra-nodes circle.ring { fill: none; stroke: rgba(255, 255, 255, 0.045); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.infra-nodes circle.end { fill: var(--color-accent-soft); fill-opacity: 0.1; }
+.infra-nodes path.cross { stroke: rgba(255, 255, 255, 0.05); }
+.infra-pulse circle { fill: var(--color-accent-soft); }
+.infra-pulse .halo { fill-opacity: 0.14; }
+
+@media (max-width: 720px) {
+    /* No telemóvel: faixa curta no topo, sem pulse e com menos linhas */
+    .infra { inset: 0 0 auto 0; height: 560px; }
+    .infra-pulse, .infra-far path:nth-child(n+3), .infra-near path:nth-child(n+4), .infra-nodes circle:nth-child(n+9) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .infra-pulse { display: none; }
+    .infra-nodes circle.end { fill-opacity: 0.1; }
+}
