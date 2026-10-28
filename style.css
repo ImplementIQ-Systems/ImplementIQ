@@ -1367,54 +1367,14 @@ a { color: inherit; }
     .js .cta-flow circle { opacity: 1; animation: none; }
 }
 
-/* Infrastructure layer (só no hero da home): textura técnica muito ténue atrás do
-   System Flow. Decorativa (aria-hidden), SVG + CSS, sem JavaScript.
-   Hierarquia: texto e CTAs, depois System Flow, depois esta camada. */
-#topo::before { display: none; } /* a grelha regular dá lugar a esta composição irregular */
+/* Hero da home: sem grelha de fundo, para não competir com o System Flow */
+#topo::before { display: none; }
 
-.infra {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    /* desvanece no fim do hero e atrás da coluna de texto */
-    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 58%, transparent 92%), linear-gradient(90deg, rgba(0, 0, 0, 0.06) 28%, #000 50%);
-    -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 58%, transparent 92%), linear-gradient(90deg, rgba(0, 0, 0, 0.06) 28%, #000 50%);
-    mask-composite: intersect;
-}
-
-.infra path, .infra circle { fill: none; stroke: none; }
-.infra path { stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.infra-far { filter: blur(0.5px); }
-.infra-far path { stroke: rgba(255, 255, 255, 0.28); }
-.infra-near path { stroke: rgba(255, 255, 255, 0.42); }
-.infra-near path.acc { stroke: rgba(155, 148, 255, 0.8); }
-.infra-nodes circle { fill: rgba(255, 255, 255, 0.5); }
-.infra-nodes circle.a { fill: rgba(155, 148, 255, 0.9); }
-.infra-nodes circle.ring { fill: none; stroke: rgba(255, 255, 255, 0.38); stroke-width: 1; vector-effect: non-scaling-stroke; }
-.infra-nodes circle.end { fill: var(--color-accent-soft); fill-opacity: 0.25; }
-.infra-nodes path.cross { stroke: rgba(255, 255, 255, 0.42); }
-.infra-pulse circle { fill: var(--color-accent-soft); }
-.infra-pulse .halo { fill-opacity: 0.3; }
-
+/* Telemóvel: fases do System Flow em grelha 2x2, com o ponto ao lado do número */
 @media (max-width: 720px) {
-    /* No telemóvel: faixa curta no topo, sem pulse e com menos linhas */
-    /* No telemóvel a camada de fundo não acrescenta nada e compete com o System Flow: desligada */
-    .infra { display: none; }
-
-    /* Fases em grelha 2x2, com o ponto ao lado do número */
     .sf-stage { padding: 0 0 0 22px; }
     .sf-stage::before { top: 4px; }
     .hero { padding-bottom: 64px; }
-    /* o pulse e todas as linhas ficam também no telemóvel */
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .infra-pulse { display: none; }
-    .infra-nodes circle.end { fill-opacity: 0.25; }
 }
 
 /* ── PARTICLE NETWORK CANVAS (page-hero sections) ── */
@@ -1425,8 +1385,8 @@ a { color: inherit; }
     height: 100%;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.45;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 30%, black 60%);
-    mask-image: linear-gradient(90deg, transparent 0%, transparent 30%, black 60%);
+    opacity: 1;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 42%, black 66%);
+    mask-image: linear-gradient(90deg, transparent 0%, transparent 42%, black 66%);
 }
 .page-hero .wrap { position: relative; z-index: 1; }
