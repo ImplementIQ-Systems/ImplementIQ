@@ -189,3 +189,59 @@
         setupYear();
     });
 })();
+
+/* ── PARTICLE NETWORK (page-hero .iq-net) ──────────────────────────────── */
+(function () {
+    var N = 40, MAX_DIST = 128;
+
+    function initCanvas(c) {
+        var ctx = c.getContext('2d');
+        var pts = [];
+
+        function resize() {
+            c.width  = c.parentElement.offsetWidth;
+            c.height = c.parentElement.offsetHeight;
+        }
+
+        function init() {
+            pts = [];
+            for (var i = 0; i < N; i++) {
+                pts.push({
+                    x: Math.random() * c.width,
+                    y: Math.random() * c.height,
+                    vx: (Math.random() - 0.5) * 0.26,
+                    vy: (Math.random() - 0.5) * 0.26
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, c.width, c.height);
+            for (var i = 0; i < N; i++) {
+                var p = pts[i];
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > c.width)  p.vx *= -1;
+                if (p.y < 0 || p.y > c.height) p.vy *= -1;
+                for (var j = i + 1; j < N; j++) {
+                    var q = pts[j], dx = p.x - q.x, dy = p.y - q.y;
+                    var d = Math.sqrt(dx * dx + dy * dy);
+                    if (d < MAX_DIST) {
+                        ctx.strokeStyle = 'rgba(155,148,255,' + ((1 - d / MAX_DIST) * 0.38) + ')';
+                        ctx.lineWidth = 0.6;
+                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+                    }
+                }
+                ctx.beginPath(); ctx.arc(p.x, p.y, 1.3, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(155,148,255,0.48)'; ctx.fill();
+            }
+            requestAnimationFrame(draw);
+        }
+
+        resize(); init(); draw();
+        window.addEventListener('resize', function () { resize(); init(); });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.iq-net').forEach(initCanvas);
+    });
+})();
