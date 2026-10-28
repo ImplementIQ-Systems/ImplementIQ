@@ -52,4 +52,4 @@ O email que receber as mensagens é o configurado no Formspree. Quando existir o
 
 ## Adicionar um projeto à secção "Projetos"
 
-Na `index.html`, secção `#projetos`, existe um modelo comentado de `<article class="project">`. Copiar, preencher só com informação verificável (problema, solução, o que foi construído, tecnologias, resultado observado) e remover o bloco `.projects-empty`. Não inventar números nem clientes.
+Na `index.html`, secção `#projetos`, existe um modelo comentado de `<article class="project">` e três estados prontos (`.project-state`). Quando houver um caso verificável (e autorização do cliente), substituir o estado correspondente pelo cartão preenchido: problema, solução, o que foi construído, tecnologias, resultado observado. Não inventar números nem clientes.

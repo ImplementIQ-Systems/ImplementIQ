@@ -41,6 +41,11 @@
 
         /* Cada elemento com data-pt tem também data-en. Trocamos o conteúdo.
            Os elementos do <head> (title e meta) têm tratamento próprio. */
+        /* Etiquetas de acessibilidade (aria-label) com tradução própria */
+        document.querySelectorAll('[data-aria-pt]').forEach(function (el) {
+            el.setAttribute('aria-label', el.getAttribute('data-aria-' + next));
+        });
+
         document.querySelectorAll('[data-pt]').forEach(function (el) {
             var value = el.getAttribute('data-' + next);
             if (value === null) return;

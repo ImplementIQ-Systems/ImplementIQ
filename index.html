@@ -166,7 +166,7 @@
 <circle class="sf-packet" r="3" opacity="0"><animateMotion dur="3.6s" begin="7.6s" repeatCount="indefinite"><mpath href="#sfm2"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="3.6s" begin="7.6s" repeatCount="indefinite"/></circle>
 <circle class="sf-packet" r="3" opacity="0"><animateMotion dur="3.6s" begin="8.3s" repeatCount="indefinite"><mpath href="#sfm3"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur="3.6s" begin="8.3s" repeatCount="indefinite"/></circle>
 </svg>
-                <ol class="sf-stages" aria-label="Fases">
+                <ol class="sf-stages" data-aria-pt="Fases do fluxo" data-aria-en="Flow stages" aria-label="Fases do fluxo">
                     <li class="sf-stage" style="--t:0s" data-pt="<b>01</b>Fragmentação" data-en="<b>01</b>Fragmentation"><b>01</b>Fragmentação</li>
                     <li class="sf-stage" style="--t:1.7s" data-pt="<b>02</b>Conexão" data-en="<b>02</b>Connection"><b>02</b>Conexão</li>
                     <li class="sf-stage" style="--t:3.3s" data-pt="<b>03</b>Automação" data-en="<b>03</b>Automation"><b>03</b>Automação</li>
@@ -182,7 +182,7 @@
     <div class="wrap">
         <div class="section-head reveal">
             <p class="eyebrow" data-pt="Sinais" data-en="Signals">Sinais</p>
-            <h2 data-pt="Quando faz sentido falar connosco" data-en="When it makes sense to talk to us">Quando faz sentido falar connosco</h2>
+            <h2 class="h-display" data-pt="Quando faz sentido falar connosco" data-en="When it makes sense to talk to us">Quando faz sentido falar connosco</h2>
             <p data-pt="Se reconhece uma destas situações, provavelmente podemos ajudar." data-en="If you recognise one of these situations, we can probably help.">Se reconhece uma destas situações, provavelmente podemos ajudar.</p>
         </div>
 
@@ -290,11 +290,11 @@
 </section>
 
 <!-- Método em resumo -->
-<section class="section" id="metodo">
+<section class="section dark" id="metodo">
     <div class="wrap">
         <div class="section-head reveal">
             <p class="eyebrow" data-pt="Método" data-en="Method">Método</p>
-            <h2 data-pt="Como trabalhamos" data-en="How we work">Como trabalhamos</h2>
+            <h2 class="h-display" data-pt="Como trabalhamos" data-en="How we work">Como trabalhamos</h2>
             <p data-pt="Simples e sem surpresas: antes de começar, sabe o que vai acontecer, quando e por que investimento." data-en="Simple and no surprises: before we start, you know what will happen, when, and at what investment.">Simples e sem surpresas: antes de começar, sabe o que vai acontecer, quando e por que investimento.</p>
         </div>
 
@@ -314,16 +314,9 @@
     <div class="wrap">
         <div class="section-head reveal">
             <p class="eyebrow" data-pt="Projetos" data-en="Projects">Projetos</p>
-            <h2 data-pt="Trabalho que podemos mostrar" data-en="Work we can show">Trabalho que podemos mostrar</h2>
+            <h2 class="h-quiet" data-pt="Trabalho que podemos mostrar" data-en="Work we can show">Trabalho que podemos mostrar</h2>
             <p data-pt="Só publicamos aqui o que se pode verificar: o problema, o que foi construído e o resultado observado." data-en="We only publish what can be verified: the problem, what was built and the observed result.">Só publicamos aqui o que se pode verificar: o problema, o que foi construído e o resultado observado.</p>
         </div>
-
-        <ul class="projects-cats reveal" aria-label="Categorias">
-            <li data-pt="Projeto cliente" data-en="Client project">Projeto cliente</li>
-            <li data-pt="Em implementação" data-en="In progress">Em implementação</li>
-            <li data-pt="Lab" data-en="Lab">Lab</li>
-            <li data-pt="Projeto técnico" data-en="Technical project">Projeto técnico</li>
-        </ul>
 
         <!-- Para adicionar um projeto, copiar este modelo para dentro de .projects-list
              e preencher só com informação verificável (ver README):
@@ -341,12 +334,25 @@
         </article>
         -->
 
-        <div class="projects-empty reveal">
-            <div>
-                <h3 data-pt="Os primeiros casos entram aqui" data-en="The first cases will appear here">Os primeiros casos entram aqui</h3>
-                <p data-pt="Estamos a documentar os primeiros projetos. Cada um terá o problema, a solução, o que foi construído, as tecnologias e o resultado observado, sem números inventados." data-en="We are documenting our first projects. Each one will have the problem, the solution, what was built, the technologies and the observed result, with no invented numbers.">Estamos a documentar os primeiros projetos. Cada um terá o problema, a solução, o que foi construído, as tecnologias e o resultado observado, sem números inventados.</p>
-            </div>
-            <a href="contacto.html#formulario" class="btn btn-ghost" data-pt="Falar sobre o seu caso" data-en="Talk about your case">Falar sobre o seu caso</a>
+        <div class="projects-grid reveal">
+            <article class="project-state is-done">
+                <p class="label" data-pt="Projeto cliente" data-en="Client project">Projeto cliente</p>
+                <h3 data-pt="Um projeto concluído" data-en="One completed project">Um projeto concluído</h3>
+                <p data-pt="Estamos a preparar o caso com o problema, o que foi construído e o resultado observado, para publicar com autorização do cliente." data-en="We are preparing the case with the problem, what was built and the observed result, to publish with the client’s permission.">Estamos a preparar o caso com o problema, o que foi construído e o resultado observado, para publicar com autorização do cliente.</p>
+                <p class="state-note" data-pt="Em preparação" data-en="Being prepared">Em preparação</p>
+            </article>
+            <article class="project-state">
+                <p class="label" data-pt="Em implementação" data-en="In progress">Em implementação</p>
+                <h3 data-pt="Dois projetos B2B em curso" data-en="Two B2B projects under way">Dois projetos B2B em curso</h3>
+                <p data-pt="Publicamos cada um quando houver resultados que se possam verificar, sem antecipar números." data-en="We publish each one when there are results that can be verified, without anticipating numbers.">Publicamos cada um quando houver resultados que se possam verificar, sem antecipar números.</p>
+                <p class="state-note" data-pt="Em desenvolvimento" data-en="In development">Em desenvolvimento</p>
+            </article>
+            <article class="project-state">
+                <p class="label" data-pt="Lab · Projeto técnico" data-en="Lab · Technical project">Lab · Projeto técnico</p>
+                <h3 data-pt="Demonstrações técnicas" data-en="Technical demos">Demonstrações técnicas</h3>
+                <p data-pt="Projetos pessoais e académicos que mostram o que sabemos construir, com código e arquitetura à vista." data-en="Personal and academic projects that show what we can build, with code and architecture in plain view.">Projetos pessoais e académicos que mostram o que sabemos construir, com código e arquitetura à vista.</p>
+                <p class="state-note" data-pt="A documentar" data-en="To be documented">A documentar</p>
+            </article>
         </div>
     </div>
 </section>
@@ -372,6 +378,7 @@
 <section class="cta">
     <div class="wrap">
         <div class="reveal">
+            <svg class="cta-flow" viewBox="0 0 168 44" aria-hidden="true" focusable="false"><path style="--i:0" pathLength="1" d="M0 4 C 60 4, 90 22, 150 22"/><path style="--i:1" pathLength="1" d="M0 22 H150"/><path style="--i:2" pathLength="1" d="M0 40 C 60 40, 90 22, 150 22"/><circle cx="156" cy="22" r="4"/></svg>
             <h2 data-pt="Diga-nos o que está a atrasar a empresa." data-en="Tell us what is slowing your company down.">Diga-nos o que está a atrasar a empresa.</h2>
             <p data-pt="Uma conversa de 15 a 30 minutos para perceber se faz sentido trabalharmos juntos. Sem compromisso." data-en="A 15 to 30 minute conversation to see if it makes sense to work together. No commitment.">Uma conversa de 15 a 30 minutos para perceber se faz sentido trabalharmos juntos. Sem compromisso.</p>
         </div>
@@ -394,7 +401,7 @@
                 <p data-pt="Automação, Business Intelligence e integração de sistemas para PMEs em Portugal." data-en="Automation, Business Intelligence and systems integration for SMEs in Portugal.">Automação, Business Intelligence e integração de sistemas para PMEs em Portugal.</p>
                 <p><a href="tel:+351910625090">+351 910 625 090</a></p>
             </div>
-            <nav aria-label="Serviços">
+            <nav data-aria-pt="Serviços" data-aria-en="Services" aria-label="Serviços">
                 <p class="footer-title" data-pt="Serviços" data-en="Services">Serviços</p>
                 <ul>
                     <li><a href="servicos.html#automacao" data-pt="Automação de processos" data-en="Process automation">Automação de processos</a></li>
@@ -403,7 +410,7 @@
                     <li><a href="pack.html" data-pt="Landing page" data-en="Landing page">Landing page</a></li>
                 </ul>
             </nav>
-            <nav aria-label="Empresa">
+            <nav data-aria-pt="Empresa" data-aria-en="Company" aria-label="Empresa">
                 <p class="footer-title" data-pt="Empresa" data-en="Company">Empresa</p>
                 <ul>
                     <li><a href="metodo.html" data-pt="Método" data-en="Method">Método</a></li>
