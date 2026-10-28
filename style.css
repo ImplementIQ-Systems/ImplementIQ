@@ -1389,21 +1389,21 @@ a { color: inherit; }
 .infra path, .infra circle { fill: none; stroke: none; }
 .infra path { stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .infra-far { filter: blur(0.5px); }
-.infra-far path { stroke: rgba(255, 255, 255, 0.16); }
-.infra-near path { stroke: rgba(255, 255, 255, 0.26); }
-.infra-near path.acc { stroke: rgba(155, 148, 255, 0.55); }
-.infra-nodes circle { fill: rgba(255, 255, 255, 0.3); }
-.infra-nodes circle.a { fill: rgba(155, 148, 255, 0.65); }
-.infra-nodes circle.ring { fill: none; stroke: rgba(255, 255, 255, 0.22); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.infra-far path { stroke: rgba(255, 255, 255, 0.28); }
+.infra-near path { stroke: rgba(255, 255, 255, 0.42); }
+.infra-near path.acc { stroke: rgba(155, 148, 255, 0.8); }
+.infra-nodes circle { fill: rgba(255, 255, 255, 0.5); }
+.infra-nodes circle.a { fill: rgba(155, 148, 255, 0.9); }
+.infra-nodes circle.ring { fill: none; stroke: rgba(255, 255, 255, 0.38); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .infra-nodes circle.end { fill: var(--color-accent-soft); fill-opacity: 0.25; }
-.infra-nodes path.cross { stroke: rgba(255, 255, 255, 0.26); }
+.infra-nodes path.cross { stroke: rgba(255, 255, 255, 0.42); }
 .infra-pulse circle { fill: var(--color-accent-soft); }
-.infra-pulse .halo { fill-opacity: 0.22; }
+.infra-pulse .halo { fill-opacity: 0.3; }
 
 @media (max-width: 720px) {
     /* No telemóvel: faixa curta no topo, sem pulse e com menos linhas */
-    .infra { inset: 0 0 auto 0; height: 560px; }
-    .infra-pulse, .infra-far path:nth-child(n+3), .infra-near path:nth-child(n+4), .infra-nodes circle:nth-child(n+9) { display: none; }
+    .infra { inset: 0 0 auto 0; height: 640px; }
+    /* o pulse e todas as linhas ficam também no telemóvel */
 }
 
 @media (prefers-reduced-motion: reduce) {
