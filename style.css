@@ -1402,7 +1402,20 @@ a { color: inherit; }
 
 @media (max-width: 720px) {
     /* No telemóvel: faixa curta no topo, sem pulse e com menos linhas */
-    .infra { inset: 0 0 auto 0; height: 640px; }
+    /* A camada fica só atrás do System Flow (parte de baixo do hero): nunca por trás do texto */
+    .infra {
+        inset: auto 0 0 0;
+        height: 480px;
+        -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 30%, #000 70%, transparent 100%);
+        mask-image: linear-gradient(180deg, transparent 0, #000 30%, #000 70%, transparent 100%);
+        -webkit-mask-composite: source-over;
+        mask-composite: add;
+    }
+
+    /* Fases em grelha 2x2, com o ponto ao lado do número */
+    .sf-stage { padding: 0 0 0 22px; }
+    .sf-stage::before { top: 4px; }
+    .hero { padding-bottom: 64px; }
     /* o pulse e todas as linhas ficam também no telemóvel */
 }
 
