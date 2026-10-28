@@ -190,55 +190,76 @@
     });
 })();
 
-/* ── PARTICLE NETWORK (page-hero .iq-net) ──────────────────────────────── */
+/* ── PARTICLE NETWORK (page-hero .iq-net) ──────────────────────────────────
+   Aglomerado compacto no lado direito do hero: os pontos vivem numa zona
+   fixa (R) alinhada com a margem direita do conteúdo, e as bordas desvanecem
+   (alfa por distância ao centro da zona), por isso não há "caixa" visível. */
 (function () {
-    var N = 48, MAX_DIST = 150;
+    var N = 36, MAX_DIST = 105, ZONE_W = 380, ZONE_H = 290;
 
     function initCanvas(c) {
         var ctx = c.getContext('2d');
-        var pts = [];
+        var pts = [], R = { x: 0, y: 0, w: 0, h: 0 };
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         function resize() {
             c.width  = c.parentElement.offsetWidth;
             c.height = c.parentElement.offsetHeight;
+            /* margem direita do conteúdo (.wrap tem no máx. 1100px, centrado) */
+            var right = Math.min(c.width - 16, c.width / 2 + 550);
+            R.w = Math.min(ZONE_W, c.width * 0.45);
+            R.h = Math.min(ZONE_H, c.height * 0.8);
+            R.x = right - R.w;
+            R.y = (c.height - R.h) / 2 + 8;
         }
 
         function init() {
             pts = [];
             for (var i = 0; i < N; i++) {
                 pts.push({
-                    x: c.width * (0.4 + Math.random() * 0.6), /* só no lado direito, onde não há texto */
-                    y: Math.random() * c.height,
+                    x: R.x + Math.random() * R.w,
+                    y: R.y + Math.random() * R.h,
                     vx: (Math.random() - 0.5) * 0.26,
                     vy: (Math.random() - 0.5) * 0.26
                 });
             }
         }
 
-        function draw() {
+        /* 1 no centro da zona, 0 na borda: serve para desvanecer */
+        function fade(p) {
+            var dx = (p.x - (R.x + R.w / 2)) / (R.w / 2);
+            var dy = (p.y - (R.y + R.h / 2)) / (R.h / 2);
+            return Math.pow(Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy)), 0.6);
+        }
+
+        function draw(move) {
             ctx.clearRect(0, 0, c.width, c.height);
             for (var i = 0; i < N; i++) {
                 var p = pts[i];
-                p.x += p.vx; p.y += p.vy;
-                if (p.x < c.width * 0.38 || p.x > c.width)  p.vx *= -1;
-                if (p.y < 0 || p.y > c.height) p.vy *= -1;
+                if (move) {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < R.x || p.x > R.x + R.w) p.vx *= -1;
+                    if (p.y < R.y || p.y > R.y + R.h) p.vy *= -1;
+                }
+                var fp = fade(p);
                 for (var j = i + 1; j < N; j++) {
                     var q = pts[j], dx = p.x - q.x, dy = p.y - q.y;
                     var d = Math.sqrt(dx * dx + dy * dy);
                     if (d < MAX_DIST) {
-                        ctx.strokeStyle = 'rgba(155,148,255,' + ((1 - d / MAX_DIST) * 0.85) + ')';
+                        var a = (1 - d / MAX_DIST) * 1.1 * Math.min(fp, fade(q));
+                        ctx.strokeStyle = 'rgba(155,148,255,' + Math.min(a, 0.9) + ')';
                         ctx.lineWidth = 1;
                         ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
                     }
                 }
                 ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(185,180,255,0.95)'; ctx.fill();
+                ctx.fillStyle = 'rgba(185,180,255,' + Math.min(0.95, fp * 1.2) + ')'; ctx.fill();
             }
-            requestAnimationFrame(draw);
+            if (move) requestAnimationFrame(function () { draw(true); });
         }
 
-        resize(); init(); draw();
-        window.addEventListener('resize', function () { resize(); init(); });
+        resize(); init(); draw(!reduce);
+        window.addEventListener('resize', function () { resize(); init(); if (reduce) draw(false); });
     }
 
     document.addEventListener('DOMContentLoaded', function () {
