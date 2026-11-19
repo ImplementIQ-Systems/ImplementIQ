@@ -475,6 +475,10 @@ a { color: inherit; }
 .hero-visual { min-width: 0; }
 @media (min-width: 1280px) { .hero-visual { margin-right: calc(var(--gutter) * -1); } }
 
+/* Animação do Hero: página autónoma embebida (isola o CSS e o JS da animação) */
+.hero-anim { display: block; width: 100%; aspect-ratio: 700 / 600; border: 0; background: transparent; }
+@media (max-width: 720px) { .hero-anim { aspect-ratio: 340 / 520; max-width: 380px; margin-inline: auto; } }
+
 .sf { position: relative; }
 
 .sf-svg { display: block; width: 100%; height: auto; overflow: visible; }

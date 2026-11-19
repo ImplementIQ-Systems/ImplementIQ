@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<script>try { if (/[?&]embed\b/.test(location.search)) document.documentElement.classList.add("embed"); } catch (e) {}</script>
 <title>Painel em Transição</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
@@ -72,6 +73,10 @@ body {
 .tag.tr { top: 8px; right: 10px; }
 .tag.br { bottom: 6px; right: 10px; }
 .tagged .tag { opacity: 1; }
+/* Modo embebido (Hero do site): sem fundo, sem margens e sem o Replay de teste */
+html.embed { color-scheme: normal; background: transparent; }
+html.embed body { background: transparent; padding: 0; justify-content: flex-start; gap: 0; }
+html.embed .controls { display: none; }
 canvas#cv { position: absolute; left: 0; top: 0; z-index: 60; pointer-events: none; display: block; }
 .instant, .instant * { transition: none !important; }
 
@@ -116,7 +121,10 @@ const smooth = (v, a, b) => { const t = clamp((v - a) / (b - a), 0, 1); return t
 const mix = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t), lerp(a[3], b[3], t)];
 const rgba = c => 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + c[3].toFixed(3) + ')';
 const al = (c, a) => [c[0], c[1], c[2], a];
-const mq = q => !!(window.matchMedia && window.matchMedia(q).matches);
+const EMBED = document.documentElement.classList.contains('embed');
+/* embebido, a largura que conta é a da página que o contém, não a do iframe */
+let QW = window; try { if (EMBED && window.parent && window.parent !== window) { void window.parent.document; QW = window.parent; } } catch (e) { QW = window; }
+const mq = q => !!(QW.matchMedia && QW.matchMedia(q).matches);
 
 const REDUCE = mq('(prefers-reduced-motion: reduce)');
 const MOBILE = mq('(max-width: 720px)');
@@ -494,7 +502,7 @@ const G = { tx: new Spring(0), ty: new Spring(0), sx: new Spring(0), sy: new Spr
 /* ───────────── escala da área ───────────── */
 let K = 1;
 function fit() {
-    K = Math.min(1, (document.documentElement.clientWidth - 32) / W);
+    K = Math.min(1, (document.documentElement.clientWidth - (EMBED ? 0 : 32)) / W);
     box.style.width = W * K + 'px'; box.style.height = H * K + 'px';
     stage.style.transform = 'scale(' + K + ')';
 }
@@ -791,7 +799,12 @@ function init() {
     }
     const rnd = seeded(20261119);
     objs.forEach(o => { o.D = buildDots(o, rnd); });
-    ready = true; reset(); render(0); wake();
+    ready = true; reset(); render(0);
+    /* embebido: só arranca quando o cartaz está à vista (no telemóvel fica abaixo do ecrã) */
+    if (EMBED && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); wake(); } }, { threshold: 0.35 });
+        io.observe(document.documentElement);
+    } else wake();
 }
 const fontsReady = document.fonts && document.fonts.load ? Promise.race([
     Promise.all([document.fonts.load('600 20px "Schibsted Grotesk"'), document.fonts.load('400 12px "Schibsted Grotesk"')]),
