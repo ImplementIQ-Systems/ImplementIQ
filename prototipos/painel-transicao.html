@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Painel em Transição</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Protótipo de uma única animação: caos → organização → um sistema.
+   Direção: navy profundo, índigo e violeta suave só como acento, papel off-white
+   nos objetos que são "documentos" (Excel, Faturação) para variar o formato. */
+:root {
+    --bg: #0a0f24;
+    --bg-2: #101845;
+    --ink: #e9ebfa;
+    --mute: rgba(233, 235, 250, 0.55);
+    --indigo: #4a3fd0;
+    --violet: #9b94ff;
+    --sans: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+html { background: var(--bg); }
+body {
+    margin: 0;
+    background: radial-gradient(ellipse 70% 55% at 50% 42%, #111a48 0%, var(--bg) 70%), var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    padding-block: 24px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    overflow-x: hidden;
+}
+
+.box { position: relative; flex: none; }
+.stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; perspective: 1100px; touch-action: pan-y; }
+.world { position: absolute; inset: 0; transform-origin: 50% 50%; }
+
+/* Moldura do painel: só aparece quando a última peça encaixa */
+.surface { position: absolute; border-radius: 28px; opacity: 0; transition: opacity 1.2s ease;
+    background: radial-gradient(520px circle at var(--fx, 40%) var(--fy, 18%), rgba(155, 148, 255, 0.07), transparent 62%); }
+.frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.frame rect { fill: none; stroke: rgba(155, 148, 255, 0.42); stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 1; }
+.framed .frame rect { stroke-dashoffset: 0; transition: stroke-dashoffset 1.05s cubic-bezier(0.65, 0, 0.2, 1); }
+.framed .surface { opacity: 1; }
+
+.label { position: absolute; opacity: 0; transform: translateY(6px);
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.label b { display: block; font: 500 11px/1 var(--mono); letter-spacing: 0.2em; color: var(--ink); }
+.label span { display: block; margin-top: 8px; font: 400 12.5px/1 var(--sans); color: var(--mute); }
+.labeled .label { opacity: 1; transform: none; }
+
+/* Objetos */
+.obj { position: absolute; left: 0; top: 0; will-change: transform; transform-origin: 50% 50%; }
+.run .obj { animation: iqIn 0.8s ease both; animation-delay: calc(var(--i) * 90ms); }
+@keyframes iqIn { from { opacity: 0; } to { opacity: 1; } }
+.face { position: absolute; inset: 0; overflow: hidden; border: 1px solid transparent; }
+.dim { position: absolute; inset: 0; background: #070b1c; pointer-events: none; }
+.sheen { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(circle at var(--hx, 28%) var(--hy, 18%), rgba(255, 255, 255, var(--hi, 0.05)), transparent 62%); }
+.part { position: absolute; left: 0; top: 0; pointer-events: none; }
+.txt { white-space: nowrap; line-height: 1.12; font-family: var(--sans); }
+.poly { overflow: visible; }
+.poly polyline, .poly polygon { vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.tag { position: absolute; font: 400 8.5px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--mute); opacity: 0; transition: opacity 1s ease; pointer-events: none; }
+.tag.tr { top: 8px; right: 10px; }
+.tag.br { bottom: 6px; right: 10px; }
+.tagged .tag { opacity: 1; }
+canvas#cv { position: absolute; left: 0; top: 0; z-index: 60; pointer-events: none; display: block; }
+.instant, .instant * { transition: none !important; }
+
+/* Controlo de teste, fora da área da animação */
+.controls { display: flex; align-items: center; gap: 14px; min-height: 30px; }
+#replay { font: 400 11px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute);
+    background: transparent; border: 1px solid rgba(155, 148, 255, 0.22); border-radius: 99px; padding: 9px 16px; cursor: pointer;
+    transition: color 0.2s, border-color 0.2s; }
+#replay:hover:not([disabled]) { color: var(--ink); border-color: rgba(155, 148, 255, 0.5); }
+#replay:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
+#replay[disabled] { opacity: 0.4; cursor: default; }
+#note { font: 400 11px/1 var(--mono); color: var(--mute); letter-spacing: 0.04em; }
+#note:empty { display: none; }
+</style>
+</head>
+<body>
+
+<div class="box" id="box">
+    <div class="stage" id="stage">
+        <div class="world" id="world">
+            <div class="surface" id="surface"></div>
+            <svg class="frame" id="frameSvg" aria-hidden="true"><rect id="frameRect" pathLength="1"/></svg>
+            <div class="label" id="label"><b>PAINEL ÚNICO</b><span>Visão operacional</span></div>
+            <div id="objs" role="img" aria-label="Seis ferramentas dispersas (Excel, CRM, Email, ERP, Faturação e Relatório) organizam-se num único painel operacional"></div>
+            <canvas id="cv" aria-hidden="true"></canvas>
+        </div>
+    </div>
+</div>
+<div class="controls">
+    <button id="replay" type="button">Replay</button>
+    <span id="note" role="status"></span>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ───────────── utilitários ───────────── */
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = (v, a, b) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const mix = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t), lerp(a[3], b[3], t)];
+const rgba = c => 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + c[3].toFixed(3) + ')';
+const al = (c, a) => [c[0], c[1], c[2], a];
+const mq = q => !!(window.matchMedia && window.matchMedia(q).matches);
+
+const REDUCE = mq('(prefers-reduced-motion: reduce)');
+const MOBILE = mq('(max-width: 720px)');
+const POINTER = !MOBILE && mq('(hover: hover) and (pointer: fine)');
+
+/* paleta (igual à do site) */
+const OF = [233, 235, 250, 0.95], MU = [233, 235, 250, 0.55];
+const DK = [26, 33, 80, 1], DKM = [26, 33, 80, 0.55];
+const VI = [155, 148, 255, 1], IN = [74, 63, 208, 1], IM = [112, 102, 236, 0.9];
+
+/* ───────────── motor de molas ───────────── */
+class Spring {
+    constructor(x) { this.x = x || 0; this.v = 0; this.t = this.x; this.w = 6; this.z = 0.8; }
+    to(t, w, z) { this.t = t; if (w) { this.w = w; this.z = z; } }
+    step(h) {
+        const a = -this.w * this.w * (this.x - this.t) - 2 * this.z * this.w * this.v;
+        this.v += a * h; this.x += this.v * h;
+    }
+    get rest() { return Math.abs(this.x - this.t) < 4e-4 && Math.abs(this.v) < 4e-4; }
+    reset(x) { this.x = x; this.t = x; this.v = 0; }
+}
+
+/* ───────────── descrição dos objetos ───────────── */
+/* Cada objeto tem uma "face" e peças (partes) com estado A (caos) e B (painel).
+   x, y, w, h são frações do tamanho atual da face; wp, hp são pixels.
+   life: p = persiste e transforma-se, o = só existe no caos, i = só existe no painel. */
+const R = (life, A, B) => ({ k: 'r', life, A, B });
+const T = (life, txt, A, B) => ({ k: 't', life, txt, A, B });
+const P = (life, A, B) => ({ k: 'p', life, A, B });
+
+/* cada fonte tem a sua cor: verde Excel, laranja CRM, azul Email, vermelho ERP,
+   rosa Faturação, violeta Relatório (a cor da marca) */
+const WH = [255, 255, 255, 1];
+const GR = [46, 176, 112, 1], GRL = [132, 228, 174, 1];
+const OR = [255, 153, 70, 1], ORL = [255, 190, 130, 1];
+const BL = [96, 165, 255, 1], BLL = [160, 200, 255, 1];
+const RD = [244, 106, 106, 1], RDL = [255, 156, 156, 1];
+const PK = [236, 122, 200, 1], PKL = [246, 172, 224, 1];
+const VL = [190, 185, 255, 1];
+const NAME_B = { x: 0.955, y: 0.085, fs: 8.5, anchor: 'r', c: MU };   /* o nome da fonte fica, discreto, no canto do cartão final */
+
+function excelParts() {
+    const out = [];
+    const band = { x: 0, y: 0, w: 1, h: 0.2, c: GR }; out.push(R('o', band, band));
+    out.push(T('p', 'Excel', { x: 0.07, y: 0.05, fs: 10.5, wt: 600, c: WH }, NAME_B));
+    out.push(T('p', 'Stock', { x: 0.07, y: 0.255, fs: 10, wt: 600, c: DK }, { x: 0.08, y: 0.07, fs: 11, wt: 600, c: OF }));
+    [0.44, 0.61, 0.78].forEach(y => { const s = { x: 0, y, w: 1, h: 0.008, c: al(GR, 0.28) }; out.push(R('o', s, s)); });
+    const vd = { x: 0.56, y: 0.2, w: 0.008, h: 0.75, c: al(GR, 0.28) }; out.push(R('o', vd, vd));
+    [['Produto A', '18', 18, GR], ['Produto B', '4', 4, RD], ['Produto C', '27', 27, GR]].forEach(([l, v, n, col], i) => {
+        const y = 0.46 + 0.17 * i;
+        const a1 = { x: 0.07, y, fs: 10, c: DK }, a2 = { x: 0.6, y, fs: 10, wt: 600, c: n < 5 ? [200, 50, 60, 1] : DK };
+        out.push(T('o', l, a1, a1)); out.push(T('o', v, a2, a2));
+        const hh = 0.56 * n / 27;
+        out.push(R('p', { x: 0.6, y: y + 0.11, w: 0.32 * n / 27, h: 0.04, r: 2, c: al(col, 0.75) },
+                        { x: 0.14 + 0.3 * i, y: 0.8 - hh, w: 0.2, h: hh, r: 6, c: i === 1 ? RD : (i === 2 ? GRL : GR) }));
+    });
+    const bl = { x: 0.08, y: 0.8, w: 0.84, h: 0.008, c: al(OF, 0.2) }; out.push(R('i', bl, bl));
+    ['A', 'B', 'C'].forEach((t, i) => { const s = { x: 0.24 + 0.3 * i, y: 0.845, fs: 9, c: MU, anchor: 'c' }; out.push(T('i', t, s, s)); });
+    return out;
+}
+function crmParts() {
+    const out = [
+        R('p', { x: 0.06, y: 0.085, wp: 6, hp: 6, r: 'f', c: OR }, { x: 0.075, y: 0.15, wp: 7, hp: 7, r: 'f', c: OR }),
+        T('p', 'CRM', { x: 0.14, y: 0.065, fs: 9.5, wt: 600, c: ORL }, NAME_B),
+        T('p', '12', { x: 0.07, y: 0.24, fs: 26, wt: 600, c: OF }, { x: 0.08, y: 0.3, fs: 34, wt: 600, c: OF }),
+        T('p', 'leads', { x: 0.38, y: 0.42, fs: 10, c: MU }, { x: 0.17, y: 0.1, fs: 10.5, c: MU }),
+        R('p', { x: 0.06, y: 0.68, w: 0.66, h: 0.22, r: 'f', c: al(OR, 0.24) }, { x: 0.08, y: 0.74, w: 0.64, h: 0.17, r: 'f', c: al(OR, 0.22) }),
+        T('p', '3 sem resposta', { x: 0.11, y: 0.715, fs: 10, c: ORL }, { x: 0.12, y: 0.77, fs: 9.5, c: ORL })
+    ];
+    [[0.64, BL], [0.74, PK], [0.84, GR]].forEach(([x, c]) => { const s = { x, y: 0.07, wp: 13, hp: 13, r: 'f', c }; out.push(R('o', s, s)); });
+    return out;
+}
+function emailParts() {
+    const out = [
+        R('o', { x: 0, y: 0, w: 1, h: 0.28, c: al(BL, 0.28) }, { x: 0, y: 0, w: 1, h: 0.28, c: al(BL, 0.28) }),
+        R('p', { x: 0.06, y: 0.09, wp: 7, hp: 7, r: 'f', c: BL }, { x: 0.03, y: 0.41, wp: 8, hp: 8, r: 'f', c: BL }),
+        T('p', 'Email', { x: 0.15, y: 0.075, fs: 9.5, wt: 600, c: BLL }, { x: 0.985, y: 0.09, fs: 8.5, anchor: 'r', c: MU }),
+        T('p', 'Pedido #1842', { x: 0.07, y: 0.38, fs: 12.5, wt: 600, c: OF }, { x: 0.065, y: 0.14, fs: 12, wt: 600, c: OF }),
+        T('p', 'Aguardando confirmação', { x: 0.07, y: 0.66, fs: 10, c: ORL }, { x: 0.065, y: 0.56, fs: 10, c: ORL })
+    ];
+    const l = { x: 0.62, y: 0.16, fs: 9, c: MU }; out.push(T('i', 'Atividade', l, l));
+    [0.4, 0.7, 0.5, 0.9, 0.6, 0.8, 0.45, 0.7].forEach((v, k) => {
+        const h = 0.34 * v;
+        out.push(R('i', { x: 0.62 + 0.043 * k, y: 0.9, w: 0.026, h: 0.02, r: 2, c: al(BL, 0.45) },
+                        { x: 0.62 + 0.043 * k, y: 0.86 - h, w: 0.026, h: h, r: 2, c: al(BL, k % 2 ? 0.6 : 0.95) }));
+    });
+    return out;
+}
+function erpParts() {
+    const out = [
+        R('o', { x: 0.06, y: 0.085, wp: 6, hp: 6, r: 'f', c: RD }, { x: 0.06, y: 0.085, wp: 6, hp: 6, r: 'f', c: RD }),
+        T('p', 'ERP', { x: 0.14, y: 0.065, fs: 9.5, wt: 600, c: RDL }, NAME_B),
+        T('p', 'Margem', { x: 0.08, y: 0.27, fs: 10.5, c: MU }, { x: 0.08, y: 0.1, fs: 10.5, c: MU }),
+        T('p', '-4.2%', { x: 0.08, y: 0.43, fs: 25, wt: 600, c: RDL }, { x: 0.08, y: 0.3, fs: 32, wt: 600, c: RDL })
+    ];
+    [0.18, 0.3, 0.22, 0.38, 0.26].forEach((h, k) => { const s = { x: 0.6 + 0.065 * k, y: 0.9 - h, w: 0.045, h, r: 2, c: al(RD, 0.55) }; out.push(R('o', s, s)); });
+    out.push(R('i', { x: 0.08, y: 0.9, w: 0.5, h: 0.03, r: 'f', c: al(OF, 0.1) }, { x: 0.08, y: 0.84, w: 0.84, h: 0.06, r: 'f', c: al(OF, 0.1) }));
+    out.push(R('i', { x: 0.08, y: 0.9, w: 0.2, h: 0.03, r: 'f', c: al(RD, 0.95) }, { x: 0.08, y: 0.84, w: 0.34, h: 0.06, r: 'f', c: al(RD, 0.95) }));
+    return out;
+}
+function fatParts() {
+    const out = [];
+    const band = { x: 0, y: 0, w: 1, h: 0.17, c: PK }; out.push(R('o', band, band));
+    out.push(T('p', 'Faturação', { x: 0.08, y: 0.045, fs: 10, wt: 600, c: WH }, NAME_B));
+    const wd = [0.72, 0.6, 0.68, 0.55, 0.7, 0.58, 0.46];
+    for (let k = 0; k < 7; k++) {
+        out.push(R('p', { x: 0.14, y: 0.24 + 0.04 * k, w: wd[k] * 0.86, h: 0.02, r: 1, c: al(PK, 0.55) },
+                        { x: 0.08 + 0.126 * k, y: 0.66, w: 0.1, h: 0.13, r: 4, c: al(PK, 0.9) }));
+    }
+    out.push(T('p', '7', { x: 0.14, y: 0.56, fs: 24, wt: 600, c: DK }, { x: 0.08, y: 0.08, fs: 30, wt: 600, c: OF }));
+    out.push(T('p', 'documentos<br>pendentes', { x: 0.14, y: 0.78, fs: 9.5, c: DKM }, { x: 0.34, y: 0.36, fs: 10, c: MU }));
+    return out;
+}
+function relParts() {
+    const out = [];
+    out.push(R('p', { x: 0.09, y: 0.19, wp: 6, hp: 6, r: 'f', c: VI }, { x: 0.05, y: 0.09, wp: 6, hp: 6, r: 'f', c: VI }));
+    out.push(T('p', 'Relatório', { x: 0.17, y: 0.165, fs: 10, wt: 600, c: VL }, { x: 0.985, y: 0.07, fs: 8.5, anchor: 'r', c: MU }));
+    out.push(T('i', 'Tendência', { x: 0.09, y: 0.14, fs: 10.5, c: MU }, { x: 0.1, y: 0.075, fs: 11, c: MU }));
+    [[0.18, BL], [0.28, PK], [0.2, GR], [0.34, OR]].forEach(([h, c], k) => { const s = { x: 0.1 + 0.06 * k, y: 0.9 - h, w: 0.04, h, r: 2, c: al(c, 0.6) }; out.push(R('o', s, s)); });
+    const pa = [[0.08, 0.78], [0.2, 0.62], [0.3, 0.7], [0.42, 0.44], [0.52, 0.55], [0.62, 0.38]];
+    const pb = [[0.05, 0.8], [0.22, 0.68], [0.4, 0.62], [0.58, 0.46], [0.78, 0.34], [0.95, 0.18]];
+    out.push(P('i', { pts: pa.concat([[0.62, 0.95], [0.08, 0.95]]), fill: al(VI, 0.14) }, { pts: pb.concat([[0.95, 0.95], [0.05, 0.95]]), fill: al(VI, 0.16) }));
+    out.push(P('p', { pts: pa, stroke: al(VL, 0.85), sw: 1.5 }, { pts: pb, stroke: al(VL, 0.95), sw: 2.2 }));
+    out.push(R('i', { x: 0.62, y: 0.38, wp: 8, hp: 8, r: 'f', c: al(VL, 1), anchor: 'cc' }, { x: 0.95, y: 0.18, wp: 8, hp: 8, r: 'f', c: VI, anchor: 'cc' }));
+    return out;
+}
+
+const mkFace = (bgA, acc, paper, extra) => Object.assign({ bgA, bgB: [18, 25, 60, 0.97],
+    bdA: paper ? [255, 255, 255, 0.4] : [acc[0], acc[1], acc[2], 0.34], bdB: [acc[0], acc[1], acc[2], 0.4], rA: 12, rB: 16 }, extra || {});
+const DEFS = {
+    excel: { A: [176, 130], acc: GR, parts: excelParts, face: mkFace([232, 246, 238, 0.97], GR, true, { rA: 6 }) },
+    crm: { A: [156, 100], acc: OR, parts: crmParts, face: mkFace([48, 42, 66, 0.97], OR, false, { rA: 14 }) },
+    email: { A: [168, 84], acc: BL, parts: emailParts, face: mkFace([38, 62, 120, 0.9], BL, false) },
+    erp: { A: [144, 104], acc: RD, parts: erpParts, face: mkFace([50, 34, 68, 0.97], RD, false, { rA: 10 }) },
+    fat: { A: [124, 144], acc: PK, parts: fatParts, face: mkFace([250, 232, 244, 0.97], PK, true, { rA: 3,
+        clipA: [[0, 0], [80, 0], [100, 15], [100, 100], [0, 100]], clipB: [[0, 0], [100, 0], [100, 0], [100, 100], [0, 100]] }) },
+    rel: { A: [196, 124], acc: VI, parts: relParts, face: mkFace([34, 36, 94, 0.82], VI, false, { rA: 6,
+        clipA: [[0, 10], [62, 0], [78, 36], [100, 42], [94, 100], [6, 100]], clipB: [[0, 0], [50, 0], [100, 0], [100, 100], [50, 100], [0, 100]] }) }
+};
+
+/* ───────────── composições (caos e painel final) ───────────── */
+/* x, y = canto superior esquerdo; rot em graus; d = profundidade (0 fundo, 1 perto);
+   sw = quanto a trajetória curva (px, com sinal). */
+const DESK = {
+    W: 700, H: 600,
+    order: ['excel', 'rel', 'crm', 'erp', 'fat', 'email'],
+    chaos: {
+        excel: { x: 64, y: 96, rot: -2.6, d: 0.75, sw: 120 },
+        rel: { x: 392, y: 58, rot: 2.1, d: 0.25, sw: -90 },
+        crm: { x: 190, y: 200, rot: -1.6, d: 1.0, sw: -105 },
+        erp: { x: 470, y: 150, rot: 3.0, d: 0.5, sw: 95 },
+        email: { x: 104, y: 374, rot: -3.0, d: 0.6, sw: 100 },
+        fat: { x: 420, y: 372, rot: 2.4, d: 0.45, sw: -115 }
+    },
+    dash: {
+        crm: { x: 114, y: 162, w: 148, h: 84 }, erp: { x: 276, y: 162, w: 148, h: 84 }, fat: { x: 438, y: 162, w: 148, h: 84 },
+        rel: { x: 114, y: 262, w: 300, h: 150 }, excel: { x: 426, y: 262, w: 160, h: 150 }, email: { x: 114, y: 428, w: 472, h: 52 }
+    },
+    frame: { x: 90, y: 90, w: 520, h: 420 }, label: { x: 114, y: 108 }
+};
+const MOB = {
+    W: 340, H: 520,
+    order: ['excel', 'rel', 'crm', 'erp', 'email'],
+    chaos: {
+        rel: { x: 128, y: 20, rot: 2.1, d: 0.25, sw: -60 },
+        excel: { x: 12, y: 96, rot: -2.6, d: 0.75, sw: 70 },
+        crm: { x: 158, y: 196, rot: -1.6, d: 1.0, sw: -60 },
+        email: { x: 16, y: 312, rot: -3.0, d: 0.6, sw: 60 },
+        erp: { x: 170, y: 330, rot: 3.0, d: 0.5, sw: 55 }
+    },
+    dash: {
+        crm: { x: 24, y: 82, w: 144, h: 84 }, erp: { x: 180, y: 82, w: 144, h: 84 },
+        rel: { x: 24, y: 176, w: 300, h: 124 }, excel: { x: 24, y: 310, w: 300, h: 100 }, email: { x: 24, y: 420, w: 300, h: 48 }
+    },
+    frame: { x: 8, y: 14, w: 324, h: 484 }, label: { x: 24, y: 32 }
+};
+const LAY = MOBILE ? MOB : DESK;
+const W = LAY.W, H = LAY.H;
+
+/* Coreografia (ms). Quem reconhece a força primeiro, quem encaixa por último. */
+/* Cartões sólidos até ~1,6 s; depois desfazem-se em pontos (DIS), viajam,
+   e voltam a ser cartões sólidos quando os pontos chegam. */
+const DIS = 900, BW = 0.28;
+const REC = { excel: 1600, rel: 1730, crm: 1860, erp: 1990, fat: 2120, email: 2250 };
+const MOVE = { excel: 2400, rel: 2530, crm: 2660, erp: 2790, fat: 2920, email: 3050 };
+const MORPH = { excel: 3300, rel: 3400, crm: 3550, erp: 3700, fat: 3850, email: 4000 };
+const LOCK = { excel: 4600, crm: 4750, erp: 4900, fat: 5050, rel: 5150, email: 5300 };
+
+/* ───────────── DOM ───────────── */
+const $ = id => document.getElementById(id);
+const box = $('box'), stage = $('stage'), world = $('world'), objsEl = $('objs');
+const surface = $('surface'), frameSvg = $('frameSvg'), frameRect = $('frameRect'), labelEl = $('label');
+
+stage.style.width = W + 'px'; stage.style.height = H + 'px';
+world.style.width = W + 'px'; world.style.height = H + 'px';
+frameSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+const F = LAY.frame;
+frameRect.setAttribute('x', F.x); frameRect.setAttribute('y', F.y);
+frameRect.setAttribute('width', F.w); frameRect.setAttribute('height', F.h);
+frameRect.setAttribute('rx', 28);
+Object.assign(surface.style, { left: F.x + 'px', top: F.y + 'px', width: F.w + 'px', height: F.h + 'px' });
+labelEl.style.left = LAY.label.x + 'px'; labelEl.style.top = LAY.label.y + 'px';
+
+const cv = $('cv'), ctx = cv.getContext('2d');
+const DPR = Math.min(2, window.devicePixelRatio || 1);
+cv.width = W * DPR; cv.height = H * DPR; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+
+/* ───────────── pontos: amostragem das peças ───────────── */
+/* Cada peça é desenhada numa máscara e transformada em pontos. O mesmo ponto
+   viaja do estado caótico (A) até à posição no painel (B). Gerador com semente
+   fixa: o Replay repete exatamente a mesma nuvem. */
+function seeded(s) { return () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
+
+const mc = document.createElement('canvas'), mx = mc.getContext('2d', { willReadFrequently: true });
+function raster(w, h, fn) {
+    const cw = Math.ceil(w) + 2, ch = Math.ceil(h) + 2;
+    mc.width = cw; mc.height = ch; mx.clearRect(0, 0, cw, ch);
+    mx.save(); mx.translate(1, 1); fn(mx); mx.restore();
+    return { d: mx.getImageData(0, 0, cw, ch).data, cw, ch };
+}
+function sample(rs, w, h, step, gain, rnd) {
+    const out = [];
+    for (let y = 0; y < h; y += step) for (let x = 0; x < w; x += step) {
+        const jx = x + rnd() * step, jy = y + rnd() * step;
+        const px = clamp(Math.round(jx + 1), 0, rs.cw - 1), py = clamp(Math.round(jy + 1), 0, rs.ch - 1);
+        const i = (py * rs.cw + px) * 4, a = rs.d[i + 3] / 255;
+        if (a > 0.05 && rnd() < a * gain) out.push({ x: jx - w / 2, y: jy - h / 2, r: rs.d[i], g: rs.d[i + 1], b: rs.d[i + 2], a });
+    }
+    return out;
+}
+const cl = c => 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + c[3] + ')';
+/* tudo é "luz sobre navy": o texto escuro dos objetos de papel passa a claro */
+const lit = c => c[0] < 70 ? [233, 235, 250, Math.min(1, c[3] * 1.35)] : c;
+function rr(c, x, y, w, h, r) { r = Math.min(r, w / 2, h / 2); c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function facePath(c, f, w, h, S) {
+    const clip = S === 'A' ? f.clipA : null;
+    if (clip) { c.beginPath(); clip.forEach((p, i) => { const x = p[0] / 100 * w, y = p[1] / 100 * h; i ? c.lineTo(x, y) : c.moveTo(x, y); }); c.closePath(); }
+    else rr(c, 0, 0, w, h, S === 'A' ? f.rA : f.rB);
+}
+function drawPart(c, p, w, h, G) {
+    if (p.k === 'r') {
+        const pw = G.wp != null ? G.wp : G.w * w, ph = G.hp != null ? G.hp : G.h * h;
+        let x = G.x * w, y = G.y * h; if (G.anchor === 'cc') { x -= pw / 2; y -= ph / 2; }
+        c.fillStyle = cl(lit(G.c)); rr(c, x, y, pw, ph, G.r === 'f' ? 999 : (G.r || 0)); c.fill();
+    } else if (p.k === 't') {
+        c.font = (G.wt || 400) + ' ' + G.fs + 'px "Schibsted Grotesk", system-ui, sans-serif';
+        c.textBaseline = 'top'; c.textAlign = G.anchor === 'c' ? 'center' : G.anchor === 'r' ? 'right' : 'left'; c.fillStyle = cl(lit(G.c));
+        p.txt.split('<br>').forEach((ln, i) => c.fillText(ln, G.x * w, G.y * h + i * G.fs * 1.12));
+    } else {
+        c.beginPath(); G.pts.forEach((q, i) => i ? c.lineTo(q[0] * w, q[1] * h) : c.moveTo(q[0] * w, q[1] * h));
+        if (G.fill) { c.closePath(); c.fillStyle = cl(G.fill); c.fill(); }
+        else { c.lineWidth = G.sw; c.lineJoin = c.lineCap = 'round'; c.strokeStyle = cl(G.stroke); c.stroke(); }
+    }
+}
+function paramsFor(p, G, w, h) {
+    if (p.k === 't') return G.fs < 13 ? [0.8, 2.3] : [1.0, 1.6];
+    if (p.k === 'p') return G.fill ? [2.2, 1.9] : [1.0, 1.5];
+    const pw = G.wp != null ? G.wp : G.w * w, ph = G.hp != null ? G.hp : G.h * h;
+    return Math.min(pw, ph) < 4 ? [0.9, 1.5] : [1.5, 1.35];
+}
+
+/* paleta de classes de cor (poucas, para desenhar em lote) */
+const CLS = [], CLK = {};
+function cls(r, g, b, a) {
+    const q = [Math.round(r / 16) * 16, Math.round(g / 16) * 16, Math.round(b / 16) * 16, Math.round(a * 8) / 8];
+    const k = q.join(',');
+    if (CLK[k] == null) { CLK[k] = CLS.length; CLS.push('rgba(' + clamp(q[0], 0, 255) + ',' + clamp(q[1], 0, 255) + ',' + clamp(q[2], 0, 255) + ',' + Math.max(q[3], 0.12) + ')'); }
+    return CLK[k];
+}
+
+function buildDots(o, rnd) {
+    const f = o.def.face, Aw = o.Aw, Ah = o.Ah, Bw = o.dash.w, Bh = o.dash.h;
+    const paper = f.bgA[0] > 150;
+    const ac = o.def.acc, lg = [Math.min(255, ac[0] + 70), Math.min(255, ac[1] + 70), Math.min(255, ac[2] + 70)];
+    const fillA = paper ? [f.bgA[0], f.bgA[1], f.bgA[2], 0.3] : [ac[0], ac[1], ac[2], o.id === 'email' ? 0.3 : 0.2];
+    const fillB = [ac[0], ac[1], ac[2], 0.15];
+    const bdA = paper ? [255, 255, 255, 0.9] : [lg[0], lg[1], lg[2], 0.9], bdB = [lg[0], lg[1], lg[2], 0.85];
+    const parts = [];
+    /* fundo da peça e a sua borda são também "partes" que persistem */
+    const mk = (S, w, h, stroke) => raster(w, h, c => {
+        facePath(c, f, w, h, S);
+        if (stroke) { c.lineWidth = 1.3; c.strokeStyle = cl(S === 'A' ? bdA : bdB); c.stroke(); }
+        else { c.fillStyle = cl(S === 'A' ? fillA : fillB); c.fill(); }
+    });
+    const bgA = sample(mk('A', Aw, Ah, false), Aw, Ah, 2.2, 1.6, rnd), bgB = sample(mk('B', Bw, Bh, false), Bw, Bh, 2.2, 1.6, rnd);
+    parts.push({ A: bgA, B: bgB });
+    parts.push({ A: sample(mk('A', Aw, Ah, true), Aw, Ah, 1.2, 1.0, rnd), B: sample(mk('B', Bw, Bh, true), Bw, Bh, 1.2, 1.0, rnd) });
+    o.parts_.forEach(p => {
+        const e = { A: null, B: null };
+        if (p.life !== 'i') { const [st, g] = paramsFor(p, p.A, Aw, Ah); e.A = sample(raster(Aw, Ah, c => drawPart(c, p, Aw, Ah, p.A)), Aw, Ah, st, g, rnd); }
+        if (p.life !== 'o') { const [st, g] = paramsFor(p, p.B, Bw, Bh); e.B = sample(raster(Bw, Bh, c => drawPart(c, p, Bw, Bh, p.B)), Bw, Bh, st, g, rnd); }
+        parts.push(e);
+    });
+    /* emparelhamento: o que persiste vai de A para B; o que só existe num dos
+       estados nasce do fundo (ou desfaz-se nele) */
+    const pick = arr => arr[Math.floor(rnd() * arr.length)];
+    const pairs = [];
+    const key = d => d.x + d.y * 0.3;
+    parts.forEach(pt => {
+        let A = pt.A, B = pt.B;
+        if (!A && !B) return;
+        if (!A) { A = B.map(() => { const s = pick(bgA); return { x: s.x, y: s.y, r: s.r, g: s.g, b: s.b, a: s.a }; }); B = B.slice().sort((a, b) => key(a) - key(b)); }
+        else if (!B) { B = A.map(() => pick(bgB)); A = A.slice().sort((a, b) => key(a) - key(b)); }
+        else { A = A.slice().sort((a, b) => key(a) - key(b)); B = B.slice().sort((a, b) => key(a) - key(b)); }
+        const M = Math.max(A.length, B.length);
+        for (let k = 0; k < M; k++) pairs.push([A[Math.floor(k * A.length / M)], B[Math.floor(k * B.length / M)]]);
+    });
+    const n = pairs.length;
+    const D = { n, ax: new Float32Array(n), ay: new Float32Array(n), bx: new Float32Array(n), by: new Float32Array(n),
+        ka: new Float32Array(n), kb: new Float32Array(n), arx: new Float32Array(n), ary: new Float32Array(n), dl: new Float32Array(n), sz: new Float32Array(n),
+        ca: new Uint16Array(n), cb: new Uint16Array(n),
+        ox: new Float32Array(n), oy: new Float32Array(n), vx: new Float32Array(n), vy: new Float32Array(n) };
+    pairs.forEach(([a, b], i) => {
+        D.ax[i] = a.x; D.ay[i] = a.y; D.bx[i] = b.x; D.by[i] = b.y;
+        const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, amp = (rnd() - 0.5) * 16;
+        D.arx[i] = -dy / L * amp; D.ary[i] = dx / L * amp;
+        D.ka[i] = (a.x + a.y) / (Aw + Ah) + 0.5; D.kb[i] = (b.x + b.y) / (Bw + Bh) + 0.5;
+        D.dl[i] = 0.4 * (0.6 * clamp(D.kb[i], 0, 1) + 0.4 * rnd());
+        D.sz[i] = 0.9 + 0.8 * rnd() * rnd();
+        D.ca[i] = cls(a.r, a.g, a.b, a.a); D.cb[i] = cls(b.r, b.g, b.b, b.a);
+    });
+    return D;
+}
+
+
+const NS = 'http://www.w3.org/2000/svg';
+const objs = LAY.order.map((id, i) => {
+    const def = DEFS[id], ch = LAY.chaos[id], dash = LAY.dash[id];
+    const el = document.createElement('div'); el.className = 'obj'; el.style.setProperty('--i', i);
+    const face = document.createElement('div'); face.className = 'face'; el.appendChild(face);
+    const dim = document.createElement('div'); dim.className = 'dim'; face.appendChild(dim);
+    const parts = def.parts().map(p => {
+        let n;
+        if (p.k === 'p') {
+            n = document.createElementNS(NS, 'svg'); n.setAttribute('class', 'part poly');
+            n.setAttribute('viewBox', '0 0 100 100'); n.setAttribute('preserveAspectRatio', 'none');
+            n.style.width = '100%'; n.style.height = '100%';
+            const shape = document.createElementNS(NS, p.A.fill ? 'polygon' : 'polyline');
+            shape.setAttribute('fill', 'none'); n.appendChild(shape); p.shape = shape;
+        } else {
+            n = document.createElement('div'); n.className = 'part ' + (p.k === 't' ? 'txt' : 'rect');
+            if (p.k === 't') { n.innerHTML = p.txt; if (p.A.wt) n.style.fontWeight = p.A.wt; }
+            const an = p.A.anchor;
+            if (an === 'c') n.style.transform = 'translateX(-50%)';
+            if (an === 'cc') n.style.transform = 'translate(-50%,-50%)';
+        }
+        face.appendChild(n); p.el = n; return p;
+    });
+    const sheen = document.createElement('div'); sheen.className = 'sheen'; face.appendChild(sheen);
+    objsEl.appendChild(el);
+
+    const Aw = def.A[0], Ah = def.A[1];
+    const c0 = { x: ch.x + Aw / 2, y: ch.y + Ah / 2 }, c1 = { x: dash.x + dash.w / 2, y: dash.y + dash.h / 2 };
+    const dx = c1.x - c0.x, dy = c1.y - c0.y, len = Math.hypot(dx, dy) || 1;
+    const ctrl = { x: (c0.x + c1.x) / 2 - dy / len * ch.sw, y: (c0.y + c1.y) / 2 + dx / len * ch.sw };
+    return {
+        id, def, el, face, dim, sheen, parts, ch, dash, Aw, Ah, c0, c1, ctrl, parts_: parts,
+        sA: 0.9 + 0.12 * ch.d,
+        u: new Spring(0), m: new Spring(0), or: new Spring(0), blip: new Spring(0), bank: new Spring(0),
+        tx: new Spring(0), ty: new Spring(0), lift: new Spring(0), px: new Spring(0), py: new Spring(0),
+        hx: 28, hy: 18, hi: 0.05, lastKey: '', D: null, sE: 0, ds: 0, rv: 0, tr: null, mkKey: ''
+    };
+});
+objs.forEach(o => {
+    o.tx.w = o.ty.w = 7; o.tx.z = o.ty.z = 0.55;
+    o.lift.w = 6; o.lift.z = 0.7; o.px.w = o.py.w = 5; o.px.z = o.py.z = 0.75;
+    o.bank.w = 8; o.bank.z = 0.7; o.u.w = 4; o.u.z = 0.9; o.m.w = 3; o.m.z = 0.9;
+});
+const byId = {}; objs.forEach(o => { byId[o.id] = o; });
+
+/* grupo (painel já organizado) */
+const G = { tx: new Spring(0), ty: new Spring(0), sx: new Spring(0), sy: new Spring(0) };
+[G.tx, G.ty].forEach(s => { s.w = 5; s.z = 0.8; }); [G.sx, G.sy].forEach(s => { s.w = 5; s.z = 0.8; });
+
+/* ───────────── escala da área ───────────── */
+let K = 1;
+function fit() {
+    K = Math.min(1, (document.documentElement.clientWidth - 32) / W);
+    box.style.width = W * K + 'px'; box.style.height = H * K + 'px';
+    stage.style.transform = 'scale(' + K + ')';
+}
+fit(); window.addEventListener('resize', fit);
+
+/* ───────────── simulação ───────────── */
+let simT = 0, evIdx = 0, done = false, timers = [], events = [];
+let ptr = { x: 0, y: 0, inside: false };
+
+function buildEvents() {
+    const ev = [];
+    objs.forEach(o => {
+        const id = o.id;
+        ev.push([REC[id], () => { o.u.to(0.06, 4.2, 0.9); o.or.to(0.3, 5, 0.85); o.blip.to(0.6, 8, 0.7); }]);
+        ev.push([REC[id] + 380, () => o.blip.to(0, 6, 0.8)]);
+        ev.push([MOVE[id], () => o.u.to(0.8, 2.7, 0.92)]);
+        ev.push([MORPH[id], () => o.m.to(1, id === 'rel' ? 2.4 : 3.0, 0.9)]);
+        ev.push([LOCK[id], () => o.u.to(1, 5.8, 0.78)]);
+    });
+    ev.sort((a, b) => a[0] - b[0]);
+    return ev;
+}
+
+function applyPointer() {
+    const inside = POINTER && ptr.inside && !REDUCE;
+    const nx = clamp((ptr.x - W / 2) / (W / 2), -1, 1), ny = clamp((ptr.y - H / 2) / (H / 2), -1, 1);
+    const R2 = 200 * 200;
+    objs.forEach(o => {
+        const uc = clamp(o.u.x, 0, 1);
+        const fs = inside ? 1 - uc : 0;
+        const c = center(o);
+        const dx = ptr.x - c.x, dy = ptr.y - c.y;
+        const wg = fs * Math.exp(-(dx * dx + dy * dy) / R2);
+        o.ty.t = clamp(dx / 200, -1, 1) * 3 * wg;
+        o.tx.t = -clamp(dy / 200, -1, 1) * 3 * wg;
+        o.lift.t = wg;
+        const amt = (3 + 9 * o.ch.d) * fs;
+        o.px.t = nx * amt; o.py.t = ny * amt;
+        o.wg = wg;
+        o.hxT = done && inside ? 50 + nx * 30 : 50 + clamp(dx / (o.Aw * 1.4), -1, 1) * 40 * (wg > 0.02 ? 1 : 0) + (wg > 0.02 ? 0 : -22);
+        o.hyT = done && inside ? 38 + ny * 30 : 38 + clamp(dy / (o.Ah * 1.4), -1, 1) * 40 * (wg > 0.02 ? 1 : 0) + (wg > 0.02 ? 0 : -20);
+        o.hiT = done ? (inside ? 0.09 : 0.05) : 0.05 + 0.15 * wg;
+    });
+    const g = done && inside;
+    G.ty.t = g ? nx * 1 : 0; G.tx.t = g ? -ny * 1 : 0;
+    G.sx.t = g ? nx * 3.5 : 0; G.sy.t = g ? ny * 3.5 : 0;
+}
+
+function center(o) {
+    const u = o.u.x, mt = 1 - u;
+    return { x: mt * mt * o.c0.x + 2 * mt * u * o.ctrl.x + u * u * o.c1.x, y: mt * mt * o.c0.y + 2 * mt * u * o.ctrl.y + u * u * o.c1.y };
+}
+function velocity(o) {
+    const u = o.u.x, mt = 1 - u;
+    return { x: (2 * mt * (o.ctrl.x - o.c0.x) + 2 * u * (o.c1.x - o.ctrl.x)) * o.u.v, y: (2 * mt * (o.ctrl.y - o.c0.y) + 2 * u * (o.c1.y - o.ctrl.y)) * o.u.v };
+}
+
+function stepAll(h) {
+    objs.forEach(o => {
+        o.bank.t = clamp(-velocity(o).x * 0.0035, -2.2, 2.2);
+        o.u.step(h); o.m.step(h); o.or.step(h); o.blip.step(h); o.bank.step(h);
+        o.tx.step(h); o.ty.step(h); o.lift.step(h); o.px.step(h); o.py.step(h);
+    });
+    G.tx.step(h); G.ty.step(h); G.sx.step(h); G.sy.step(h);
+}
+
+function advance(ms) {
+    simT += ms;
+    while (evIdx < events.length && events[evIdx][0] <= simT) events[evIdx++][1]();
+    let rem = ms / 1000; const h = 1 / 240;
+    while (rem > 1e-9) { const s = Math.min(h, rem); applyPointer(); stepAll(s); rem -= s; }
+    if (!done && evIdx >= events.length && objs.every(o => Math.abs(o.u.x - 1) < 0.004 && Math.abs(o.u.v) < 0.03 && Math.abs(o.m.x - 1) < 0.004 && Math.abs(o.m.v) < 0.03)) complete(false);
+}
+
+function settled() {
+    if (evIdx < events.length) return false;
+    if (!done || dotsActive) return false;
+    return objs.every(o => o.u.rest && o.m.rest && o.or.rest && o.blip.rest && o.bank.rest && o.tx.rest && o.ty.rest && o.lift.rest && o.px.rest && o.py.rest &&
+        Math.abs(o.hx - o.hxT) < 0.3 && Math.abs(o.hy - o.hyT) < 0.3 && Math.abs(o.hi - o.hiT) < 0.002) &&
+        G.tx.rest && G.ty.rest && G.sx.rest && G.sy.rest;
+}
+
+/* ───────────── render ───────────── */
+let dotsActive = false, ready = false;
+function render(dt) {
+    dt = dt || 0;
+    world.style.transform = 'rotateX(' + G.tx.x.toFixed(3) + 'deg) rotateY(' + G.ty.x.toFixed(3) + 'deg)';
+    const sx = G.sx.x, sy = G.sy.x;
+    surface.style.transform = 'translate(' + (sx * 0.4).toFixed(2) + 'px,' + (sy * 0.4).toFixed(2) + 'px)';
+    frameSvg.style.transform = 'translate(' + (sx * 0.4).toFixed(2) + 'px,' + (sy * 0.4).toFixed(2) + 'px)';
+    labelEl.style.translate = (sx * 0.4).toFixed(2) + 'px ' + (sy * 0.4).toFixed(2) + 'px';
+    surface.style.setProperty('--fx', (50 + sx * 8).toFixed(1) + '%'); surface.style.setProperty('--fy', (20 + sy * 8).toFixed(1) + '%');
+    objs.forEach(o => {
+        o.sE = o.m.x > 0.3 ? 1 : 0;
+        const t = clamp((simT - REC[o.id]) / DIS, 0, 1);
+        o.ds = t * t * (3 - 2 * t);
+        o.rv = smooth(o.m.x, 0.72, 0.985) * smooth(o.u.x, 0.9, 0.995);
+        renderObj(o);
+    });
+    dotsActive = false;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    [...objs].sort((a, b) => (a.el.style.zIndex | 0) - (b.el.style.zIndex | 0)).forEach(o => drawDots(o, dt));
+}
+
+let xs = new Float32Array(1), ys = new Float32Array(1), ord = new Int32Array(1), cnt = new Int32Array(1), kk = new Uint16Array(1);
+const RAD = 78, RAD2 = RAD * RAD;
+function drawDots(o, dt) {
+    const D = o.D; if (!D || o.ds <= 0 || o.rv >= 1 || !o.tr) return;
+    const n = D.n;
+    if (xs.length < n) { xs = new Float32Array(n); ys = new Float32Array(n); ord = new Int32Array(n); kk = new Uint16Array(n); }
+    if (cnt.length < CLS.length + 2) cnt = new Int32Array(CLS.length + 2);
+    const m = o.m.x, uc = clamp(o.u.x, 0, 1);
+    const cr = Math.cos(o.tr.rot) * o.tr.s, sr = Math.sin(o.tr.rot) * o.tr.s, gx = o.tr.cx, gy = o.tr.cy;
+    const inside = POINTER && ptr.inside && !REDUCE && dt > 0;
+    const rep = inside ? 1 - smooth(o.u.x, 0.55, 1) : 0;
+    const K_ = 22, C_ = 5, FORCE = 5200, step = dt > 0 ? Math.min(dt, 1 / 40) : 0;
+    const span = 1 / (1 - 0.4), fa = o.ds * (1 + BW) - BW / 2, fb = o.rv * (1 + BW) - BW / 2;
+    cnt.fill(0);
+    const { ax, ay, bx, by, arx, ary, dl, ca, cb, ka, kb, ox, oy, vx, vy } = D;
+    for (let i = 0; i < n; i++) {
+        if (fa <= ka[i] || fb > kb[i]) { kk[i] = CLS.length; cnt[CLS.length + 1]++; continue; }
+        const t = clamp((m - dl[i]) * span, 0, 1), sm = t * t * (3 - 2 * t), ar = 4 * sm * (1 - sm);
+        /* ao largar o cartão, os pontos soltam-se um pouco; ao chegar, apertam-se */
+        const loose = 1 + 2 * clamp(fa - ka[i], 0, 1) * (1 - sm) * (1 - sm);
+        const lx = ax[i] + (bx[i] - ax[i]) * sm + arx[i] * (ar + 0.8 * (loose - 1)), ly = ay[i] + (by[i] - ay[i]) * sm + ary[i] * (ar + 0.8 * (loose - 1));
+        let X = gx + lx * cr - ly * sr + ox[i], Y = gy + lx * sr + ly * cr + oy[i];
+        if (step) {
+            if (rep) {
+                const dx = X - ptr.x, dy = Y - ptr.y, d2 = dx * dx + dy * dy;
+                if (d2 < RAD2 && d2 > 0.01) { const d = Math.sqrt(d2), f = (1 - d / RAD); const k = f * f * FORCE * rep * step / d; vx[i] += dx * k; vy[i] += dy * k; }
+            }
+            vx[i] += (-K_ * ox[i] - C_ * vx[i]) * step; vy[i] += (-K_ * oy[i] - C_ * vy[i]) * step;
+            ox[i] += vx[i] * step; oy[i] += vy[i] * step;
+            if (Math.abs(vx[i]) + Math.abs(vy[i]) + Math.abs(ox[i]) + Math.abs(oy[i]) > 0.03) dotsActive = true;
+            else { ox[i] = oy[i] = vx[i] = vy[i] = 0; }
+        }
+        xs[i] = X; ys[i] = Y;
+        const k = sm < 0.5 ? ca[i] : cb[i]; kk[i] = k; cnt[k + 1]++;
+    }
+    for (let k = 1; k <= CLS.length + 1; k++) cnt[k] += cnt[k - 1];
+    const pos = cnt.slice(0, CLS.length + 1);
+    for (let i = 0; i < n; i++) if (kk[i] < CLS.length) ord[pos[kk[i]]++] = i;
+    ctx.globalAlpha = lerp(0.7 + 0.3 * o.ch.d, 1, uc);
+    const szk = lerp(0.95 + 0.15 * o.ch.d, 1.05, uc);
+    for (let k = 0; k < CLS.length; k++) {
+        const a = cnt[k], b = cnt[k + 1]; if (a === b) continue;
+        ctx.fillStyle = CLS[k]; ctx.beginPath();
+        for (let j = a; j < b; j++) { const i = ord[j], z = D.sz[i] * szk; ctx.rect(xs[i] - z / 2, ys[i] - z / 2, z, z); }
+        ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+}
+
+function renderObj(o) {
+    const u = o.u.x, m = o.sE, uc = clamp(u, 0, 1), e = m;
+    const c = center(o);
+    const w = lerp(o.Aw, o.dash.w, m), h = lerp(o.Ah, o.dash.h, m);
+    const rot = o.ch.rot * (1 - clamp(o.or.x, 0, 0.6)) * (1 - uc) + o.bank.x;
+    const flight = Math.sin(Math.PI * uc);
+    const liftT = o.lift.x + o.blip.x;
+    const s = lerp(o.sA, 1, uc) + 0.055 * flight + 0.035 * liftT;
+    const z = (1 - uc) * o.ch.d * 0.8 + flight * 0.7 + liftT * 0.9;
+    const gs = done ? 1 : 0;
+    const left = c.x + o.px.x + G.sx.x * gs - w / 2, top = c.y + o.py.x + G.sy.x * gs - h / 2;
+    const st = o.el.style;
+    st.width = w.toFixed(2) + 'px'; st.height = h.toFixed(2) + 'px';
+    st.transform = 'translate3d(' + left.toFixed(2) + 'px,' + top.toFixed(2) + 'px,0) rotateX(' + o.tx.x.toFixed(3) + 'deg) rotateY(' + o.ty.x.toFixed(3) + 'deg) rotate(' + rot.toFixed(3) + 'deg) scale(' + s.toFixed(4) + ')';
+    st.zIndex = Math.round(2 + o.ch.d * 8 * (1 - uc) + flight * 6 + liftT * 3 + uc * 4);
+    st.filter = 'drop-shadow(0 ' + (4 + 18 * z).toFixed(1) + 'px ' + (7 + 17 * z).toFixed(1) + 'px rgba(2,4,18,' + (0.3 + 0.22 * Math.min(z, 1)).toFixed(3) + '))';
+
+    o.tr = { cx: c.x + o.px.x + G.sx.x * gs, cy: c.y + o.py.x + G.sy.x * gs, rot: rot * Math.PI / 180, s };
+    /* máscara: o cartão sólido desfaz-se ao longo da diagonal e volta a formar-se do mesmo modo */
+    const grad = (p, erode) => { const f = p * (1 + BW); return erode ? 'linear-gradient(135deg,transparent ' + ((f - BW) * 100).toFixed(1) + '%,#000 ' + (f * 100).toFixed(1) + '%)' : 'linear-gradient(135deg,#000 ' + ((f - BW) * 100).toFixed(1) + '%,transparent ' + (f * 100).toFixed(1) + '%)'; };
+    let vis = 'visible', mk = 'none';
+    if (o.sE === 0) { if (o.ds >= 1) vis = 'hidden'; else if (o.ds > 0) mk = grad(o.ds, true); }
+    else { if (o.rv <= 0) vis = 'hidden'; else if (o.rv < 1) mk = grad(o.rv, false); }
+    const mkKey = vis + mk;
+    if (mkKey !== o.mkKey) { o.mkKey = mkKey; o.face.style.visibility = vis; o.face.style.webkitMaskImage = o.face.style.maskImage = mk; }
+    const f = o.def.face, fs = o.face.style;
+    fs.background = rgba(mix(f.bgA, f.bgB, e));
+    fs.borderColor = rgba(mix(f.bdA, f.bdB, e));
+    fs.borderRadius = lerp(f.rA, f.rB, e).toFixed(1) + 'px';
+    if (f.clipA) {
+        fs.clipPath = 'polygon(' + f.clipA.map((p, i) => lerp(p[0], f.clipB[i][0], e).toFixed(2) + '% ' + lerp(p[1], f.clipB[i][1], e).toFixed(2) + '%').join(',') + ')';
+    }
+    o.dim.style.opacity = ((1 - o.ch.d) * 0.3 * (1 - uc) * (1 - e)).toFixed(3);
+
+    /* brilho de superfície segue o cursor, com inércia */
+    if (o.hxT !== undefined) { o.hx += (o.hxT - o.hx) * 0.12; o.hy += (o.hyT - o.hy) * 0.12; o.hi += (o.hiT - o.hi) * 0.12; }
+    fs.setProperty('--hx', o.hx.toFixed(1) + '%'); fs.setProperty('--hy', o.hy.toFixed(1) + '%'); fs.setProperty('--hi', o.hi.toFixed(3));
+
+    const key = w.toFixed(1) + '|' + h.toFixed(1) + '|' + e.toFixed(4);
+    if (key !== o.lastKey) { o.lastKey = key; updParts(o, w, h, e); }
+}
+
+function updParts(o, w, h, e) {
+    o.parts.forEach(p => {
+        const A = p.A, B = p.B;
+        const op = p.life === 'o' ? 1 - smooth(e, 0, 0.38) : p.life === 'i' ? smooth(e, 0.6, 0.95) : 1;
+        if (p.k === 'p') {
+            const pts = A.pts.map((a, i) => lerp(a[0], B.pts[i][0], e) * 100 + ',' + lerp(a[1], B.pts[i][1], e) * 100).join(' ');
+            p.shape.setAttribute('points', pts);
+            if (A.fill) p.shape.setAttribute('fill', rgba(mix(A.fill, B.fill, e)));
+            else { p.shape.setAttribute('stroke', rgba(mix(A.stroke, B.stroke, e))); p.shape.setAttribute('stroke-width', lerp(A.sw, B.sw, e).toFixed(2)); }
+            p.el.style.opacity = op.toFixed(3);
+            return;
+        }
+        const st = p.el.style;
+        st.left = (lerp(A.x, B.x, e) * w).toFixed(2) + 'px';
+        st.top = (lerp(A.y, B.y, e) * h).toFixed(2) + 'px';
+        if (p.k === 'r') {
+            const pw = lerp(A.wp != null ? A.wp : A.w * w, B.wp != null ? B.wp : B.w * w, e);
+            const ph = lerp(A.hp != null ? A.hp : A.h * h, B.hp != null ? B.hp : B.h * h, e);
+            st.width = pw.toFixed(2) + 'px'; st.height = ph.toFixed(2) + 'px';
+            st.borderRadius = (A.r === 'f' ? 999 : lerp(A.r || 0, B.r || 0, e)).toFixed(1) + 'px';
+            st.background = rgba(mix(A.c, B.c, e));
+        } else {
+            st.fontSize = lerp(A.fs, B.fs, e).toFixed(2) + 'px';
+            { const an = e > 0.5 ? (B.anchor || '') : (A.anchor || ''); st.transform = an === 'c' ? 'translateX(-50%)' : an === 'r' ? 'translateX(-100%)' : ''; }
+            st.color = rgba(mix(A.c, B.c, e));
+        }
+        st.opacity = op.toFixed(3);
+    });
+}
+
+/* ───────────── fim: moldura, título e origens ───────────── */
+function complete(instant) {
+    done = true;
+    const set = c => world.classList.add(c);
+    if (instant) { world.classList.add('instant'); set('framed'); set('labeled'); set('tagged'); void world.offsetWidth; world.classList.remove('instant'); return; }
+    timers.push(setTimeout(() => set('framed'), 120));
+    timers.push(setTimeout(() => set('labeled'), 700));
+    timers.push(setTimeout(() => set('tagged'), 1250));
+}
+
+/* ───────────── ciclo (só corre enquanto algo se mexe) ───────────── */
+let raf = 0, last = 0;
+function loop(now) {
+    raf = 0;
+    const dt = Math.min(48, now - last); last = now;
+    advance(dt);
+    render(dt / 1000);
+    if (!settled()) raf = requestAnimationFrame(loop);
+}
+function wake() { if (ready && !raf) { last = performance.now(); raf = requestAnimationFrame(loop); } }
+
+function reset() {
+    clearTimeout(0); timers.forEach(clearTimeout); timers = [];
+    if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    ['framed', 'labeled', 'tagged'].forEach(c => world.classList.remove(c));
+    objs.forEach(o => {
+        [o.u, o.m, o.or, o.blip, o.bank, o.tx, o.ty, o.lift, o.px, o.py].forEach(s => s.reset(0));
+        o.u.w = 4; o.u.z = 0.9; o.m.w = 3; o.m.z = 0.9; o.lastKey = '';
+        o.hx = 28; o.hy = 18; o.hi = 0.05; o.hxT = 28; o.hyT = 18; o.hiT = 0.05; o.wg = 0;
+        o.sE = 0; o.ds = 0; o.rv = 0; o.mkKey = '';
+        if (o.D) { o.D.ox.fill(0); o.D.oy.fill(0); o.D.vx.fill(0); o.D.vy.fill(0); }
+    });
+    [G.tx, G.ty, G.sx, G.sy].forEach(s => s.reset(0));
+    simT = 0; evIdx = 0; done = false; dotsActive = false; events = buildEvents();
+    objsEl.classList.remove('run'); void objsEl.offsetWidth; objsEl.classList.add('run');
+}
+
+function showFinal() {
+    objs.forEach(o => { o.u.reset(1); o.m.reset(1); o.sE = 1; o.ds = 1; o.rv = 1; o.lastKey = ''; });
+    evIdx = events.length; done = true;
+    applyPointer(); render(0); complete(true);
+}
+
+/* ───────────── eventos ───────────── */
+if (POINTER && !REDUCE) {
+    stage.addEventListener('pointermove', ev => {
+        const r = stage.getBoundingClientRect();
+        ptr.x = (ev.clientX - r.left) / K; ptr.y = (ev.clientY - r.top) / K; ptr.inside = true; wake();
+    });
+    stage.addEventListener('pointerleave', () => { ptr.inside = false; wake(); });
+}
+$('replay').addEventListener('click', () => { if (REDUCE || !ready) return; reset(); render(0); wake(); });
+
+/* gancho de teste: avança a simulação de forma determinística */
+window.__proto = {
+    seek(ms) { reset(); let t = 0; while (t < ms) { const d = Math.min(8, ms - t); advance(d); t += d; } render(0); if (done) complete(true); },
+    state() { return { simT, done, evIdx, n: events.length, dots: objs.map(o => o.D ? o.D.n : 0), ready, u: objs.map(o => +o.u.x.toFixed(3)), m: objs.map(o => +o.m.x.toFixed(3)), raf: !!raf }; }
+};
+
+/* ───────────── arranque ───────────── */
+/* Os pontos só se amostram depois de a fonte carregar, para o texto sair certo. */
+function init() {
+    if (ready) return;
+    if (REDUCE) {
+        ready = true; reset();
+        $('replay').disabled = true;
+        $('note').textContent = 'Movimento reduzido ativo: a mostrar o estado final.';
+        showFinal(); return;
+    }
+    const rnd = seeded(20261119);
+    objs.forEach(o => { o.D = buildDots(o, rnd); });
+    ready = true; reset(); render(0); wake();
+}
+const fontsReady = document.fonts && document.fonts.load ? Promise.race([
+    Promise.all([document.fonts.load('600 20px "Schibsted Grotesk"'), document.fonts.load('400 12px "Schibsted Grotesk"')]),
+    new Promise(r => setTimeout(r, 1500))]) : Promise.resolve();
+fontsReady.then(init, init);
+})();
+</script>
+
+</body>
+</html>
