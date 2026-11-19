@@ -508,8 +508,6 @@ a { color: inherit; }
 .sf-bar.hot { fill: var(--color-accent-soft); }
 .sf-trend { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-opacity: 0.9; animation: sf-draw 1.2s var(--ease) 5s both; }
 
-/* Dados a circular depois de tudo ligado: lentos e discretos */
-.sf-packet { fill: #fff; filter: drop-shadow(0 0 4px rgba(155, 148, 255, 0.9)); }
 
 /* Barra de fases: acende por ordem enquanto a composição se constrói */
 .sf-stages {
@@ -1249,7 +1247,7 @@ a { color: inherit; }
     .sf-panel, .sf-panel-title, .sf-kpi, .sf-base, .sf-bar, .sf-trend,
     .sf-stage, .sf-stage::before { animation: none; }
 
-    .sf-ring, .sf-packet { display: none; }
+    .sf-ring, .sf-pulse, .sf-hit { display: none; }
 
     .js .reveal,
     .js .flow-step { opacity: 1; transform: none; transition: none; }
@@ -1386,3 +1384,74 @@ a { color: inherit; }
     opacity: 1;
     }
 .page-hero .wrap { position: relative; z-index: 1; }
+
+/* ── DATA PULSE (hero da home) ─────────────────────────────────────────────
+   Pulso único sobre o diagrama System Flow, mais um pulso curto ao passar o
+   cursor por uma ligação. O comportamento está em hero-pulse.js, que só liga
+   e desliga classes (.sf-run no diagrama, .is-hover no pulso e no nó).
+   Só transform, opacity e cor de traço; sem ciclos infinitos. */
+
+/* O pulso é um traço curto (16% da ligação) que viaja ao longo do caminho.
+   Em repouso fica fora do caminho, por isso não se vê. */
+.sf-pulse {
+    fill: none;
+    stroke: var(--color-accent-soft);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-dasharray: 0.16 1.2;
+    stroke-dashoffset: 0.16;
+    pointer-events: none;
+}
+
+/* Área de deteção do cursor: larga e invisível, só criada quando há rato */
+.sf-hit { fill: none; stroke: transparent; stroke-width: 22; pointer-events: stroke; }
+
+.sf-run .sf-pulse,
+.sf-pulse.is-hover {
+    filter: drop-shadow(0 0 3px rgba(155, 148, 255, 0.7));
+}
+.sf-run .sf-pulse { animation: sf-travel 0.85s cubic-bezier(0.4, 0, 0.2, 1) var(--dl, 0s) both; }
+.sf-pulse.is-hover { animation: sf-travel 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
+
+/* Nós. Atenção: estas regras acrescentam uma animação à lista em vez de a
+   substituir. Cada lista repete a animação de entrada original (a primeira
+   da lista, igual à regra base do mesmo seletor); se saísse da lista,
+   o navegador voltaria a executá-la quando a classe fosse removida. */
+
+/* O chip de origem acende ao mesmo tempo que o pulso sai dele */
+.sf-run .sf-chip,
+.sf-chip.is-hover {
+    animation: sf-settle 1.5s var(--ease) calc(0.5s + var(--i) * 0.09s) both,
+               sf-bump 0.7s ease calc(var(--i) * 0.08s) both;
+}
+.sf-chip.is-hover { animation-delay: calc(0.5s + var(--i) * 0.09s), 0s; }
+.sf-run .sf-chip rect,
+.sf-chip.is-hover rect {
+    animation: sf-solid 0.7s ease calc(1.5s + var(--i) * 0.09s) both,
+               sf-lit 0.7s ease calc(var(--i) * 0.08s) both;
+}
+.sf-chip.is-hover rect { animation-delay: calc(1.5s + var(--i) * 0.09s), 0s; }
+
+/* Regra: reage um pouco mais, a meio do percurso (dados processados) */
+.sf-rule .sf-rule-box { transform-box: fill-box; transform-origin: center; }
+.sf-run .sf-rule .sf-rule-box,
+.sf-rule .sf-rule-box.is-hover {
+    animation: sf-appear 0.7s ease 3.2s both, sf-rule-lit 0.9s ease 1.05s both;
+}
+.sf-rule .sf-rule-box.is-hover { animation-delay: 3.2s, 0s; animation-duration: 0.7s, 0.7s; }
+
+/* Painel: último a reagir (dados consolidados) */
+.sf-run .sf-panel { animation: sf-appear 0.8s ease 4s both, sf-panel-lit 0.9s ease 1.95s both; }
+
+@keyframes sf-travel { from { stroke-dashoffset: 0.16; } to { stroke-dashoffset: -1; } }
+@keyframes sf-bump { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.03); } }
+@keyframes sf-lit { 0%, 100% { stroke: #3a4580; } 40% { stroke: var(--color-accent-soft); } }
+@keyframes sf-rule-lit {
+    0%, 100% { transform: scale(1); stroke: var(--color-accent-soft); fill: var(--color-night-2); }
+    45% { transform: scale(1.05); stroke: #fff; fill: #1b2552; }
+}
+@keyframes sf-panel-lit { 0%, 100% { stroke: #4a548f; } 45% { stroke: var(--color-accent-soft); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .sf-pulse, .sf-hit { display: none; }
+}
