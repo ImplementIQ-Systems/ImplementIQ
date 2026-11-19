@@ -1385,73 +1385,114 @@ a { color: inherit; }
     }
 .page-hero .wrap { position: relative; z-index: 1; }
 
-/* ── DATA PULSE (hero da home) ─────────────────────────────────────────────
-   Pulso único sobre o diagrama System Flow, mais um pulso curto ao passar o
-   cursor por uma ligação. O comportamento está em hero-pulse.js, que só liga
-   e desliga classes (.sf-run no diagrama, .is-hover no pulso e no nó).
-   Só transform, opacity e cor de traço; sem ciclos infinitos. */
+/* ── DATA PULSE v2 (hero da home) ──────────────────────────────────────────
+   Causa → processamento → consequência: um pulso sai de um sistema, a REGRA
+   processa e o PAINEL ÚNICO transforma-se num resultado.
+   O comportamento está em hero-pulse.js, que só liga e desliga classes:
+     .go        pulso a viajar numa ligação
+     .is-lit    chip de origem aceso
+     .is-proc   REGRA a processar
+     .on        vista ativa do painel (perf, trend, insight, cons)
+   Só transform, opacity e cor de traço. Nada em ciclo. */
 
-/* O pulso é um traço curto (16% da ligação) que viaja ao longo do caminho.
-   Em repouso fica fora do caminho, por isso não se vê. */
-.sf-pulse {
-    fill: none;
-    stroke: var(--color-accent-soft);
-    stroke-width: 2.4;
-    stroke-linecap: round;
-    stroke-dasharray: 0.16 1.2;
-    stroke-dashoffset: 0.16;
-    pointer-events: none;
-}
-
-/* Área de deteção do cursor: larga e invisível, só criada quando há rato */
+/* Elementos novos do SVG, invisíveis em repouso */
+.sf-pulse { fill: none; stroke: var(--color-accent-soft); stroke-width: 2.4; stroke-linecap: round;
+            stroke-dasharray: 0.16 1.2; stroke-dashoffset: 0.16; pointer-events: none; }
 .sf-hit { fill: none; stroke: transparent; stroke-width: 22; pointer-events: stroke; }
+.sf-panel-glow { fill: none; stroke: var(--color-accent-soft); stroke-width: 1.6; opacity: 0; pointer-events: none; }
 
-.sf-run .sf-pulse,
-.sf-pulse.is-hover {
-    filter: drop-shadow(0 0 3px rgba(155, 148, 255, 0.7));
+/* Vistas do painel. Em repouso só a vista ".on" se vê; sem JS ou com
+   movimento reduzido, é a vista original (perf), parada e completa. */
+.sf-view { opacity: 0; transform: scale(0.97); transform-box: fill-box; transform-origin: center; pointer-events: none; }
+.sf-view.on { opacity: 1; transform: none; }
+.sf-view .sf-kpi, .sf-view .sf-bar, .sf-view .sf-trend { animation: none; }
+
+.v-pill { fill: #1b2552; }
+.v-card { fill: #1b2552; stroke: #2c3772; stroke-width: 1; }
+.v-card.v-hot { fill: rgba(74, 63, 208, 0.32); stroke: var(--color-accent-soft); stroke-opacity: 0.75; }
+.v-bit { fill: #3d4690; }
+.v-val { fill: var(--color-accent-soft); }
+.v-ring { fill: none; stroke: var(--color-accent-soft); stroke-width: 1.4; }
+.v-check { fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; }
+.v-axis { stroke: var(--color-night-border); stroke-width: 1.2; }
+.v-grid { stroke: var(--color-night-border); stroke-width: 1; stroke-opacity: 0.5; stroke-dasharray: 3 4; }
+.v-line { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-opacity: 0.9; stroke-dasharray: 1; }
+.v-dot { fill: var(--color-accent-soft); transform-box: fill-box; transform-origin: center; }
+.v-dot-last { fill: #fff; }
+.v-halo { fill: var(--color-accent-soft); fill-opacity: 0.28; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.v-seg { fill: #3d4690; transform-box: fill-box; transform-origin: center; }
+.v-merged { fill: var(--color-accent-soft); opacity: 0; }
+.v-glow { fill: var(--color-accent-soft); fill-opacity: 0.35; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.v-line-bit { fill: #3d4690; fill-opacity: 0.55; }
+
+@media (prefers-reduced-motion: no-preference) {
+    :root { --iq-ease: cubic-bezier(0.22, 1, 0.36, 1); --iq-travel: cubic-bezier(0.4, 0, 0.2, 1); }
+
+    /* 1. Construção: ~0 a 2 s. Mesmas animações de antes, sem a pressa */
+    .sf-chip { animation: sf-settle 1.1s var(--iq-ease) calc(0.15s + var(--i) * 0.06s) both; }
+    .sf-chip rect { animation: sf-solid 0.6s ease calc(0.7s + var(--i) * 0.06s) both;
+                    transform-box: fill-box; transform-origin: center;
+                    transition: stroke 0.35s ease, transform 0.35s var(--iq-ease); }
+    .sf-chip-dot { transition: fill 0.35s ease; }
+    .sf-wire.sf-draw { animation: sf-draw 0.9s var(--iq-ease) calc(0.6s + var(--i, 0) * 0.06s) both; }
+    .sf-wire.sf-trunk { animation-delay: 1.2s; animation-duration: 0.6s; }
+    .sf-rule .sf-rule-box { animation: sf-appear 0.6s ease 1s both; transition: stroke 0.3s ease, fill 0.3s ease; }
+    .sf-rule text { animation: sf-appear 0.6s ease 1.1s both; }
+    .sf-rule .sf-ring { animation: none; }
+    .sf-panel { animation: sf-appear 0.7s ease 1s both; }
+    .sf-panel-title { animation: sf-appear 0.7s ease 1.2s both; }
+
+    /* 2. Vista ativa: o que entra, entra por ordem. --base é o atraso inicial:
+       1,4 s na construção da página e ~0 nas transições (definido pelo JS) */
+    .sf-view { transition: opacity 0.32s ease, transform 0.32s ease; }
+    .sf-view.on { transition: opacity 0.4s ease, transform 0.5s var(--iq-ease); }
+    .sf-view { --base: 1.4s; }
+
+    .sf-view.on .sf-kpi  { animation: sf-appear 0.7s ease calc(var(--base) + var(--i) * 0.08s) both; }
+    .sf-view.on .sf-bar  { animation: sf-grow 0.9s var(--iq-ease) calc(var(--base) + 0.15s + var(--i) * 0.07s) both; }
+    .sf-view.on .sf-trend { animation: sf-draw 1.1s var(--iq-ease) calc(var(--base) + 0.5s) both; }
+
+    .sf-view.on .v-fade { animation: sf-appear 0.7s ease calc(var(--base) + var(--i) * 0.09s) both; }
+    .sf-view.on .v-draw { animation: sf-draw 0.9s var(--iq-ease) calc(var(--base) + var(--i) * 0.09s) both; }
+    .sf-view.on .v-pop  { animation: v-pop 0.5s var(--iq-ease) calc(var(--base) + var(--i) * 0.09s) both; }
+    .sf-view.on .v-halo { animation: v-halo 1.1s ease-out calc(var(--base) + var(--i) * 0.09s) both; }
+    .sf-view.on .v-seg  { animation: v-converge 0.95s var(--iq-ease) calc(var(--base) + var(--i) * 0.05s) both,
+                                     v-out 0.3s ease calc(var(--base) + 0.95s) forwards; }
+    .sf-view.on .v-merged { animation: sf-appear 0.45s ease calc(var(--base) + 0.9s) both; }
+    .sf-view.on .v-glow { animation: v-glow 1s ease-out calc(var(--base) + 0.9s) both; }
+
+    /* 3. Pulso a viajar numa ligação */
+    .sf-pulse.go { animation: sf-travel 0.95s var(--iq-travel) both; filter: drop-shadow(0 0 3px rgba(155, 148, 255, 0.7)); }
+    .sf-pulse.go.is-trunk { animation-duration: 0.75s; }
+
+    /* 4. Nós */
+    .sf-chip.is-lit rect { stroke: var(--color-accent-soft); transform: scale(1.03); }
+    .sf-chip.is-lit .sf-chip-dot { fill: #fff; }
+
+    /* REGRA: contração, expansão subtil, sinal emitido (~340 ms) */
+    .sf-rule { transform-box: fill-box; transform-origin: center; }
+    .sf-rule.is-proc { animation: sf-proc 0.34s var(--iq-ease) both; }
+    .sf-rule.is-proc .sf-rule-box { stroke: #fff; fill: #1b2552; }
+    .sf-rule.is-proc .sf-ring { animation: sf-ring-emit 0.7s var(--iq-ease) 0.17s both; }
+
+    /* PAINEL: um único impulso na borda quando os dados chegam */
+    .sf-panel-glow.go { animation: sf-panel-hit 1s ease both; }
+
+    @keyframes sf-travel { from { stroke-dashoffset: 0.16; } to { stroke-dashoffset: -1; } }
+    @keyframes sf-proc { 0% { transform: scale(1); } 35% { transform: scale(0.93); } 75% { transform: scale(1.06); } 100% { transform: scale(1); } }
+    @keyframes sf-ring-emit { from { transform: scale(1); opacity: 0.55; } to { transform: scale(1.9); opacity: 0; } }
+    @keyframes sf-panel-hit { 0% { opacity: 0; } 30% { opacity: 0.8; } 100% { opacity: 0; } }
+    @keyframes v-pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes v-halo { 0% { transform: scale(0.5); opacity: 0; } 30% { opacity: 0.9; } 100% { transform: scale(1.5); opacity: 0; } }
+    @keyframes v-converge {
+        0% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+        35% { opacity: 0.85; }
+        100% { transform: none; opacity: 1; }
+    }
+    @keyframes v-out { to { opacity: 0; } }
+    @keyframes v-glow { 0% { transform: scale(1); opacity: 0; } 30% { opacity: 0.9; } 100% { transform: scale(1.12, 1.9); opacity: 0; } }
 }
-.sf-run .sf-pulse { animation: sf-travel 0.85s cubic-bezier(0.4, 0, 0.2, 1) var(--dl, 0s) both; }
-.sf-pulse.is-hover { animation: sf-travel 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
-
-/* Nós. Atenção: estas regras acrescentam uma animação à lista em vez de a
-   substituir. Cada lista repete a animação de entrada original (a primeira
-   da lista, igual à regra base do mesmo seletor); se saísse da lista,
-   o navegador voltaria a executá-la quando a classe fosse removida. */
-
-/* O chip de origem acende ao mesmo tempo que o pulso sai dele */
-.sf-run .sf-chip,
-.sf-chip.is-hover {
-    animation: sf-settle 1.5s var(--ease) calc(0.5s + var(--i) * 0.09s) both,
-               sf-bump 0.7s ease calc(var(--i) * 0.08s) both;
-}
-.sf-chip.is-hover { animation-delay: calc(0.5s + var(--i) * 0.09s), 0s; }
-.sf-run .sf-chip rect,
-.sf-chip.is-hover rect {
-    animation: sf-solid 0.7s ease calc(1.5s + var(--i) * 0.09s) both,
-               sf-lit 0.7s ease calc(var(--i) * 0.08s) both;
-}
-.sf-chip.is-hover rect { animation-delay: calc(1.5s + var(--i) * 0.09s), 0s; }
-
-/* Regra: reage um pouco mais, a meio do percurso (dados processados) */
-.sf-rule .sf-rule-box { transform-box: fill-box; transform-origin: center; }
-.sf-run .sf-rule .sf-rule-box,
-.sf-rule .sf-rule-box.is-hover {
-    animation: sf-appear 0.7s ease 3.2s both, sf-rule-lit 0.9s ease 1.05s both;
-}
-.sf-rule .sf-rule-box.is-hover { animation-delay: 3.2s, 0s; animation-duration: 0.7s, 0.7s; }
-
-/* Painel: último a reagir (dados consolidados) */
-.sf-run .sf-panel { animation: sf-appear 0.8s ease 4s both, sf-panel-lit 0.9s ease 1.95s both; }
-
-@keyframes sf-travel { from { stroke-dashoffset: 0.16; } to { stroke-dashoffset: -1; } }
-@keyframes sf-bump { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.03); } }
-@keyframes sf-lit { 0%, 100% { stroke: #3a4580; } 40% { stroke: var(--color-accent-soft); } }
-@keyframes sf-rule-lit {
-    0%, 100% { transform: scale(1); stroke: var(--color-accent-soft); fill: var(--color-night-2); }
-    45% { transform: scale(1.05); stroke: #fff; fill: #1b2552; }
-}
-@keyframes sf-panel-lit { 0%, 100% { stroke: #4a548f; } 45% { stroke: var(--color-accent-soft); } }
 
 @media (prefers-reduced-motion: reduce) {
-    .sf-pulse, .sf-hit { display: none; }
+    .sf-pulse, .sf-hit, .sf-panel-glow { display: none; }
 }
