@@ -77,6 +77,10 @@
 
     /* Transições: estados de interface 150 a 250 ms, entradas 400 a 700 ms */
     --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    /* Sinal (pulso numa ligação): a mesma duração, curva e brilho em todo o site */
+    --ease-signal: cubic-bezier(0.3, 0, 0.1, 1);
+    --dur-signal: 1100ms;
+    --glow-signal: drop-shadow(0 0 3px rgba(155, 148, 255, 0.7));
     --transition-fast: 160ms var(--ease);
     --transition-base: 240ms var(--ease);
     --transition-reveal: 600ms var(--ease);
@@ -925,7 +929,7 @@ a { color: inherit; }
     border-right: 2px solid var(--color-text);
     border-bottom: 2px solid var(--color-text);
     transform: rotate(45deg);
-    transition: transform 0.2s;
+    transition: transform var(--transition-base);
 }
 
 .faq details[open] summary::after { transform: rotate(225deg); margin-top: 4px; }
@@ -1054,6 +1058,8 @@ a { color: inherit; }
 
 .form textarea { min-height: 140px; resize: vertical; }
 
+.form input,
+.form textarea { transition: border-color var(--transition-fast); }
 .form input:focus,
 .form textarea:focus { outline: 3px solid var(--color-accent); outline-offset: 1px; border-color: var(--color-accent); }
 
@@ -1078,7 +1084,7 @@ a { color: inherit; }
     border-radius: 999px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
 .chip:hover span { border-color: var(--color-accent); }
@@ -1504,4 +1510,54 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
     .sf-pulse, .sf-hit, .sf-panel-glow { display: none; }
+}
+
+
+/* ==========================================================================
+   Sistema de movimento: o sinal (Serviços e Método)
+   A Home mostra o ciclo completo (entra, acontece, resultado). Aqui o mesmo
+   gesto aparece em ponto pequeno: um pulso percorre a ligação, o nó seguinte
+   reage e surge o resultado. Uma só vez, quando entra no ecrã; sem loops.
+   Duração, curva e brilho vêm dos tokens --dur-signal, --ease-signal e
+   --glow-signal. Com movimento reduzido nada disto corre.
+   ========================================================================== */
+.art-pulse { fill: none; stroke: var(--color-accent-soft); stroke-width: 2.4; stroke-linecap: round;
+             stroke-dasharray: 0.16 1.2; stroke-dashoffset: 0.16; opacity: 0; pointer-events: none; }
+.art-halo { fill: none; stroke: var(--color-accent-soft); stroke-width: 1.6; opacity: 0; pointer-events: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+    /* A ligação desenha-se (0,3 s + 0,9 s) e só depois o pulso a percorre; o nó
+       de destino reage quando o pulso chega e a seguir sai o segundo pulso. */
+    .js .pillar.in .art-pulse { opacity: 1; animation: sf-travel var(--dur-signal) var(--ease-signal) calc(1.3s + var(--i) * 1.45s) both; filter: var(--glow-signal); }
+    .js .pillar.in .art-halo { animation: sf-panel-hit 0.9s ease calc(2.4s + var(--i) * 1.45s) both; }
+
+    /* Método: o sinal acompanha a linha que liga os passos (só o troço
+       claro se move; no fim já não há nada a brilhar) */
+    .js .step:not(:last-child)::before,
+    .js .flow-steps::before {
+        background-repeat: no-repeat;
+        background-image: linear-gradient(90deg, transparent, var(--color-accent-soft));
+        background-size: 56px 100%;
+        background-position: -56px 0;
+    }
+    .js .step:not(:last-child)::before { background-image: linear-gradient(180deg, transparent, var(--color-accent-soft)); background-size: 100% 48px; background-position: 0 -48px; }
+    .js .step.in:not(:last-child)::before { animation: sig-y 0.9s var(--ease) 0.15s backwards; }
+    .js .flow-steps.in::before { animation: sig-x 1.3s var(--ease) 0.2s backwards; }
+    .js .section.dark .flow-steps::before { background-color: var(--color-accent-soft); background-repeat: no-repeat; background-size: 56px 100%; background-position: -56px 0; background-image: linear-gradient(90deg, transparent, #fff); }
+
+    @media (max-width: 900px) {
+        .js .flow-steps::before { background-image: linear-gradient(180deg, transparent, var(--color-accent-soft)); background-size: 100% 48px; background-position: 0 -48px; }
+        .js .section.dark .flow-steps::before { background-size: 100% 48px; background-position: 0 -48px; background-image: linear-gradient(180deg, transparent, #fff); }
+        .js .flow-steps.in::before { animation-name: sig-y; animation-duration: 1.3s; }
+    }
+}
+@keyframes sig-x { from { background-position: -56px 0; filter: var(--glow-signal); } to { background-position: calc(100% + 56px) 0; filter: var(--glow-signal); } }
+@keyframes sig-y { from { background-position: 0 -48px; filter: var(--glow-signal); } to { background-position: 0 calc(100% + 48px); filter: var(--glow-signal); } }
+
+/* Contacto: o aviso do formulário aparece com a mesma suavidade das entradas */
+@media (prefers-reduced-motion: no-preference) {
+    .form-status:not(:empty) { animation: sf-appear var(--transition-reveal) both; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .art-pulse, .art-halo { display: none; }
 }
