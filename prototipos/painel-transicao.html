@@ -485,7 +485,7 @@ const objs = LAY.order.map((id, i) => {
         sA: 0.9 + 0.12 * ch.d,
         u: new Spring(0), m: new Spring(0), or: new Spring(0), blip: new Spring(0), bank: new Spring(0),
         tx: new Spring(0), ty: new Spring(0), lift: new Spring(0), px: new Spring(0), py: new Spring(0),
-        hx: 28, hy: 18, hi: 0.05, lastKey: '', D: null, sE: 0, ds: 0, rv: 0, tr: null, mkKey: ''
+        hx: 28, hy: 18, hi: 0.05, lastKey: '', dsTw: { t0: 0, from: 0, to: 0 }, D: null, sE: 0, ds: 0, rv: 0, tr: null, mkKey: ''
     };
 });
 objs.forEach(o => {
@@ -510,20 +510,51 @@ fit(); window.addEventListener('resize', fit);
 
 /* ───────────── simulação ───────────── */
 let simT = 0, evIdx = 0, done = false, timers = [], events = [];
+let inView = false;
 let ptr = { x: 0, y: 0, inside: false };
 
+/* Ciclo contínuo (~17 s), sempre à mesma velocidade:
+     0 a 6,3 s    caos sólido, desfaz-se em pontos, viaja e volta a formar-se em cartões
+     6,5 a 10,5 s moldura, título e origens; o painel descansa
+     10,5 a 15 s  o percurso inverso: cartões → pontos → caos
+   No fim o estado é exatamente o inicial e o ciclo recomeça. */
+const CYCLE = 17400;
+const BACK = ['email', 'rel', 'fat', 'erp', 'crm', 'excel'].filter(id => LAY.order.indexOf(id) >= 0);
 function buildEvents() {
-    const ev = [];
+    const ev = [], at = (t, fn) => ev.push([t, fn]);
+    const tween = (o, t, from, to) => { o.dsTw = { t0: t, from, to }; };
     objs.forEach(o => {
         const id = o.id;
-        ev.push([REC[id], () => { o.u.to(0.06, 4.2, 0.9); o.or.to(0.3, 5, 0.85); o.blip.to(0.6, 8, 0.7); }]);
-        ev.push([REC[id] + 380, () => o.blip.to(0, 6, 0.8)]);
-        ev.push([MOVE[id], () => o.u.to(0.8, 2.7, 0.92)]);
-        ev.push([MORPH[id], () => o.m.to(1, id === 'rel' ? 2.4 : 3.0, 0.9)]);
-        ev.push([LOCK[id], () => o.u.to(1, 5.8, 0.78)]);
+        at(REC[id], () => { o.u.to(0.06, 4.2, 0.9); o.or.to(0.3, 5, 0.85); o.blip.to(0.6, 8, 0.7); tween(o, REC[id], 0, 1); });
+        at(REC[id] + 380, () => o.blip.to(0, 6, 0.8));
+        at(MOVE[id], () => o.u.to(0.8, 2.7, 0.92));
+        at(MORPH[id], () => o.m.to(1, id === 'rel' ? 2.4 : 3.0, 0.9));
+        at(LOCK[id], () => o.u.to(1, 5.8, 0.78));
+    });
+    const cls = (t, add, c) => at(t, () => world.classList[add ? 'add' : 'remove'](c));
+    at(6500, () => { done = true; world.classList.add('framed'); });
+    cls(7000, true, 'labeled'); cls(7500, true, 'tagged');
+    at(10300, () => { done = false; world.classList.remove('tagged'); });
+    cls(10500, false, 'labeled'); cls(10700, false, 'framed');
+    /* percurso inverso: cada cartão desfaz-se, volta pelo mesmo caminho e recompõe-se no sítio de partida */
+    BACK.forEach((id, k) => {
+        const o = byId[id], RB = 11000 + k * 130;
+        at(RB, () => o.u.to(0.8, 3.0, 0.9));
+        at(RB + 300, () => o.m.to(0, id === 'rel' ? 2.4 : 3.0, 0.9));
+        at(RB + 1900, () => o.u.to(0.06, 3.2, 0.92));
+        at(RB + 2700, () => tween(o, RB + 2700, 1, 0));
+        at(RB + 3000, () => { o.u.to(0, 4.2, 0.9); o.or.to(0, 5, 0.85); });
     });
     ev.sort((a, b) => a[0] - b[0]);
     return ev;
+}
+function wrapCycle() {
+    simT -= CYCLE; evIdx = 0;
+    objs.forEach(o => {
+        [o.u, o.m, o.or, o.blip, o.bank].forEach(s => s.reset(0));
+        o.sE = 0; o.ds = 0; o.rv = 0; o.dsTw = { t0: 0, from: 0, to: 0 };
+        if (o.D) { o.D.ox.fill(0); o.D.oy.fill(0); o.D.vx.fill(0); o.D.vy.fill(0); }
+    });
 }
 
 function applyPointer() {
@@ -574,12 +605,13 @@ function advance(ms) {
     while (evIdx < events.length && events[evIdx][0] <= simT) events[evIdx++][1]();
     let rem = ms / 1000; const h = 1 / 240;
     while (rem > 1e-9) { const s = Math.min(h, rem); applyPointer(); stepAll(s); rem -= s; }
-    if (!done && evIdx >= events.length && objs.every(o => Math.abs(o.u.x - 1) < 0.004 && Math.abs(o.u.v) < 0.03 && Math.abs(o.m.x - 1) < 0.004 && Math.abs(o.m.v) < 0.03)) complete(false);
+    if (simT >= CYCLE) wrapCycle();
 }
 
-function settled() {
-    if (evIdx < events.length) return false;
-    if (!done || dotsActive) return false;
+/* Nada a mexer (descansos do ciclo): o relógio avança, mas não se redesenha */
+function quiet() {
+    if (dotsActive) return false;
+    if (objs.some(o => o.dsTw.from !== o.dsTw.to && simT - o.dsTw.t0 < DIS + 60)) return false;
     return objs.every(o => o.u.rest && o.m.rest && o.or.rest && o.blip.rest && o.bank.rest && o.tx.rest && o.ty.rest && o.lift.rest && o.px.rest && o.py.rest &&
         Math.abs(o.hx - o.hxT) < 0.3 && Math.abs(o.hy - o.hyT) < 0.3 && Math.abs(o.hi - o.hiT) < 0.002) &&
         G.tx.rest && G.ty.rest && G.sx.rest && G.sy.rest;
@@ -597,8 +629,8 @@ function render(dt) {
     surface.style.setProperty('--fx', (50 + sx * 8).toFixed(1) + '%'); surface.style.setProperty('--fy', (20 + sy * 8).toFixed(1) + '%');
     objs.forEach(o => {
         o.sE = o.m.x > 0.3 ? 1 : 0;
-        const t = clamp((simT - REC[o.id]) / DIS, 0, 1);
-        o.ds = t * t * (3 - 2 * t);
+        const tw = o.dsTw, t = clamp((simT - tw.t0) / DIS, 0, 1);
+        o.ds = tw.from + (tw.to - tw.from) * (t * t * (3 - 2 * t));
         o.rv = smooth(o.m.x, 0.72, 0.985) * smooth(o.u.x, 0.9, 0.995);
         renderObj(o);
     });
@@ -738,16 +770,17 @@ function complete(instant) {
     timers.push(setTimeout(() => set('tagged'), 1250));
 }
 
-/* ───────────── ciclo (só corre enquanto algo se mexe) ───────────── */
-let raf = 0, last = 0;
+/* ───────────── ciclo contínuo: pára quando o separador está escondido ou o cartaz fora do ecrã ───────────── */
+let raf = 0, last = 0, drawn = false;
+const paused = () => document.hidden || !inView;
 function loop(now) {
     raf = 0;
     const dt = Math.min(48, now - last); last = now;
     advance(dt);
-    render(dt / 1000);
-    if (!settled()) raf = requestAnimationFrame(loop);
+    if (!drawn || !quiet()) { render(dt / 1000); drawn = quiet(); }
+    if (!paused()) raf = requestAnimationFrame(loop);
 }
-function wake() { if (ready && !raf) { last = performance.now(); raf = requestAnimationFrame(loop); } }
+function wake() { if (ready && !raf && !paused()) { last = performance.now(); drawn = false; raf = requestAnimationFrame(loop); } }
 
 function reset() {
     clearTimeout(0); timers.forEach(clearTimeout); timers = [];
@@ -757,11 +790,11 @@ function reset() {
         [o.u, o.m, o.or, o.blip, o.bank, o.tx, o.ty, o.lift, o.px, o.py].forEach(s => s.reset(0));
         o.u.w = 4; o.u.z = 0.9; o.m.w = 3; o.m.z = 0.9; o.lastKey = '';
         o.hx = 28; o.hy = 18; o.hi = 0.05; o.hxT = 28; o.hyT = 18; o.hiT = 0.05; o.wg = 0;
-        o.sE = 0; o.ds = 0; o.rv = 0; o.mkKey = '';
+        o.sE = 0; o.ds = 0; o.rv = 0; o.mkKey = ''; o.dsTw = { t0: 0, from: 0, to: 0 };
         if (o.D) { o.D.ox.fill(0); o.D.oy.fill(0); o.D.vx.fill(0); o.D.vy.fill(0); }
     });
     [G.tx, G.ty, G.sx, G.sy].forEach(s => s.reset(0));
-    simT = 0; evIdx = 0; done = false; dotsActive = false; events = buildEvents();
+    simT = 0; evIdx = 0; done = false; dotsActive = false; drawn = false; events = buildEvents();
     objsEl.classList.remove('run'); void objsEl.offsetWidth; objsEl.classList.add('run');
 }
 
@@ -783,7 +816,7 @@ $('replay').addEventListener('click', () => { if (REDUCE || !ready) return; rese
 
 /* gancho de teste: avança a simulação de forma determinística */
 window.__proto = {
-    seek(ms) { reset(); let t = 0; while (t < ms) { const d = Math.min(8, ms - t); advance(d); t += d; } render(0); if (done) complete(true); },
+    seek(ms) { reset(); let t = 0; while (t < ms) { const d = Math.min(8, ms - t); advance(d); t += d; } render(0); },
     state() { return { simT, done, evIdx, n: events.length, dots: objs.map(o => o.D ? o.D.n : 0), ready, u: objs.map(o => +o.u.x.toFixed(3)), m: objs.map(o => +o.m.x.toFixed(3)), raf: !!raf }; }
 };
 
@@ -800,11 +833,12 @@ function init() {
     const rnd = seeded(20261119);
     objs.forEach(o => { o.D = buildDots(o, rnd); });
     ready = true; reset(); render(0);
-    /* embebido: só arranca quando o cartaz está à vista (no telemóvel fica abaixo do ecrã) */
-    if (EMBED && 'IntersectionObserver' in window) {
-        const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); wake(); } }, { threshold: 0.35 });
+    /* só corre com o cartaz à vista (no telemóvel fica abaixo do ecrã) e o separador visível */
+    if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(es => { inView = es.some(e => e.isIntersecting); if (inView) wake(); }, { threshold: [0, 0.35] });
         io.observe(document.documentElement);
-    } else wake();
+    } else { inView = true; wake(); }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) wake(); });
 }
 const fontsReady = document.fonts && document.fonts.load ? Promise.race([
     Promise.all([document.fonts.load('600 20px "Schibsted Grotesk"'), document.fonts.load('400 12px "Schibsted Grotesk"')]),
